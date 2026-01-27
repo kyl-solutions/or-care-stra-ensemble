@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#25b59a"/>
+      <stop offset="100%" style="stop-color:#f5ac5d"/>
+    </linearGradient>
+
+    <!-- Bar gradients -->
+    <linearGradient id="b1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#e8f7f5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded square background -->
+  <rect width="512" height="512" rx="102" fill="url(#bg)"/>
+
+  <!-- Waveform bars (white) - centered and scaled -->
+  <g transform="translate(56, 256)">
+    <rect x="0" y="-40" width="32" height="80" rx="16" fill="white" opacity="0.95"/>
+    <rect x="56" y="-64" width="32" height="128" rx="16" fill="white" opacity="0.95"/>
+    <rect x="112" y="-96" width="32" height="192" rx="16" fill="white" opacity="0.95"/>
+    <rect x="168" y="-128" width="32" height="256" rx="16" fill="white" opacity="0.95"/>
+    <rect x="224" y="-112" width="32" height="224" rx="16" fill="white" opacity="0.95"/>
+    <rect x="280" y="-80" width="32" height="160" rx="16" fill="white" opacity="0.95"/>
+    <rect x="336" y="-56" width="32" height="112" rx="16" fill="white" opacity="0.95"/>
+    <rect x="392" y="-32" width="32" height="64" rx="16" fill="white" opacity="0.95"/>
+  </g>
+</svg>

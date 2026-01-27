@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#25b59a"/>
+      <stop offset="100%" style="stop-color:#f5ac5d"/>
+    </linearGradient>
+    <linearGradient id="b1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2dd4bf"/>
+      <stop offset="100%" style="stop-color:#25b59a"/>
+    </linearGradient>
+    <linearGradient id="b2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#5ba8e0"/>
+      <stop offset="100%" style="stop-color:#4d91cc"/>
+    </linearGradient>
+    <linearGradient id="b3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#9d85e8"/>
+      <stop offset="100%" style="stop-color:#8a70df"/>
+    </linearGradient>
+    <linearGradient id="b4" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#be88e3"/>
+      <stop offset="100%" style="stop-color:#ae71d6"/>
+    </linearGradient>
+    <linearGradient id="b5" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e878ad"/>
+      <stop offset="100%" style="stop-color:#e1629d"/>
+    </linearGradient>
+    <linearGradient id="b6" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f08d8f"/>
+      <stop offset="100%" style="stop-color:#ed787a"/>
+    </linearGradient>
+    <linearGradient id="b7" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f4a35e"/>
+      <stop offset="100%" style="stop-color:#f19149"/>
+    </linearGradient>
+    <linearGradient id="b8" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f7bc72"/>
+      <stop offset="100%" style="stop-color:#f5ac5d"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded background -->
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+
+  <!-- Waveform bars (white, centered) -->
+  <g transform="translate(8, 32)">
+    <rect x="0" y="-5" width="4" height="10" rx="2" fill="white" opacity="0.95"/>
+    <rect x="7" y="-8" width="4" height="16" rx="2" fill="white" opacity="0.95"/>
+    <rect x="14" y="-12" width="4" height="24" rx="2" fill="white" opacity="0.95"/>
+    <rect x="21" y="-16" width="4" height="32" rx="2" fill="white" opacity="0.95"/>
+    <rect x="28" y="-14" width="4" height="28" rx="2" fill="white" opacity="0.95"/>
+    <rect x="35" y="-10" width="4" height="20" rx="2" fill="white" opacity="0.95"/>
+    <rect x="42" y="-7" width="4" height="14" rx="2" fill="white" opacity="0.95"/>
+    <rect x="49" y="-4" width="4" height="8" rx="2" fill="white" opacity="0.95"/>
+  </g>
+</svg>

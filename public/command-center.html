@@ -1,0 +1,3168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Command Center | Or-care-stra Ensemble</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-void: #070B0F;
+      --bg-deep: #0A1015;
+      --bg-surface: #0D1419;
+      --bg-card: #111820;
+      --bg-elevated: #151D26;
+      --text-primary: #E8EAED;
+      --text-secondary: #9AA0A6;
+      --text-muted: #5F6368;
+      --accent-teal: #14b8a6;
+      --accent-cyan: #22d3ee;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-purple: #a78bfa;
+      --accent-blue: #3b82f6;
+      --status-healthy: #10b981;
+      --status-inuse: #3b82f6;
+      --status-attention: #f59e0b;
+      --status-critical: #ef4444;
+      --glass-bg: rgba(13, 20, 25, 0.95);
+      --glass-border: rgba(20, 184, 166, 0.15);
+      --panel-bg: rgba(17, 24, 32, 0.98);
+
+      /* Isometric colors */
+      --floor-color: #0d1a1f;
+      --floor-grid: rgba(20, 184, 166, 0.08);
+      --wall-front: #1a2a32;
+      --wall-side: #142228;
+      --wall-top: #223a44;
+      --bed-top: #1e3a5f;
+      --bed-front: #152a45;
+      --bed-side: #0f1f33;
+      --equipment-glow: rgba(20, 184, 166, 0.6);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-void);
+      color: var(--text-primary);
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* ==================== TOP BAR ==================== */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 1000;
+    }
+
+    .top-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .home-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(20, 184, 166, 0.1);
+      border: 1px solid rgba(20, 184, 166, 0.3);
+      color: var(--accent-teal);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .home-btn:hover {
+      background: rgba(20, 184, 166, 0.2);
+      border-color: var(--accent-teal);
+      transform: translateY(-1px);
+    }
+
+    .home-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .nav-divider {
+      width: 1px;
+      height: 28px;
+      background: var(--glass-border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .soundwave {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      height: 28px;
+    }
+
+    .soundwave .bar {
+      width: 3px;
+      border-radius: 1.5px;
+      animation-play-state: running;
+    }
+
+    .soundwave .bar:nth-child(1) { height: 6px; background: linear-gradient(180deg, #2dd4bf, #25b59a); animation: wave1 1.2s ease-in-out infinite; }
+    .soundwave .bar:nth-child(2) { height: 10px; background: linear-gradient(180deg, #5ba8e0, #4d91cc); animation: wave2 1.2s ease-in-out infinite 0.1s; }
+    .soundwave .bar:nth-child(3) { height: 18px; background: linear-gradient(180deg, #9d85e8, #8a70df); animation: wave3 1.2s ease-in-out infinite 0.2s; }
+    .soundwave .bar:nth-child(4) { height: 24px; background: linear-gradient(180deg, #be88e3, #ae71d6); animation: wave4 1.2s ease-in-out infinite 0.3s; }
+    .soundwave .bar:nth-child(5) { height: 20px; background: linear-gradient(180deg, #e878ad, #e1629d); animation: wave5 1.2s ease-in-out infinite 0.4s; }
+    .soundwave .bar:nth-child(6) { height: 14px; background: linear-gradient(180deg, #f08d8f, #ed787a); animation: wave6 1.2s ease-in-out infinite 0.5s; }
+    .soundwave .bar:nth-child(7) { height: 8px; background: linear-gradient(180deg, #f4a35e, #f19149); animation: wave7 1.2s ease-in-out infinite 0.6s; }
+
+    @keyframes wave1 { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(2.2); } }
+    @keyframes wave2 { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.8); } }
+    @keyframes wave3 { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.5); } }
+    @keyframes wave4 { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.3); } }
+    @keyframes wave5 { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.5); } }
+    @keyframes wave6 { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.8); } }
+    @keyframes wave7 { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(2.0); } }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: 1px;
+    }
+
+    .brand-sub {
+      font-size: 10px;
+      color: var(--accent-teal);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .top-bar-center {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stat-icon {
+      width: 20px;
+      height: 20px;
+      opacity: 0.6;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .stat-value.alert { color: var(--accent-amber); }
+
+    .top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ward-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-card);
+      padding: 4px;
+      border-radius: 8px;
+    }
+
+    .ward-tab {
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .ward-tab:hover {
+      color: var(--text-primary);
+      background: var(--bg-elevated);
+    }
+
+    .ward-tab.active {
+      color: var(--bg-void);
+      background: var(--accent-teal);
+    }
+
+    .live-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--status-healthy);
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--status-healthy);
+      border-radius: 50%;
+      animation: pulse-live 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-live {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    /* ==================== MAIN LAYOUT ==================== */
+    .main-container {
+      display: flex;
+      height: 100vh;
+      padding-top: 56px;
+    }
+
+    /* ==================== LEFT PANEL ==================== */
+    .left-panel {
+      width: 280px;
+      background: var(--panel-bg);
+      border-right: 1px solid var(--glass-border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .panel-header svg {
+      width: 16px;
+      height: 16px;
+      opacity: 0.5;
+    }
+
+    .search-box {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-input:focus { border-color: var(--accent-teal); }
+
+    .vitals-section {
+      padding: 16px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .section-title {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+
+    .vitals-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .vital-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      background: var(--bg-card);
+      border-radius: 6px;
+    }
+
+    .vital-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .vital-dot.healthy { background: var(--status-healthy); }
+    .vital-dot.inuse { background: var(--status-inuse); }
+    .vital-dot.attention { background: var(--status-attention); }
+    .vital-dot.critical { background: var(--status-critical); }
+
+    .vital-label {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .vital-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-left: auto;
+    }
+
+    .vital-count.healthy { color: var(--status-healthy); }
+    .vital-count.inuse { color: var(--status-inuse); }
+    .vital-count.attention { color: var(--status-attention); }
+    .vital-count.critical { color: var(--status-critical); }
+
+    .type-filters {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .filter-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .filter-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: var(--bg-card);
+      border: 1px solid transparent;
+      border-radius: 6px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-tag:hover {
+      border-color: var(--glass-border);
+      color: var(--text-primary);
+    }
+
+    .filter-tag.active {
+      background: rgba(20, 184, 166, 0.15);
+      border-color: var(--accent-teal);
+      color: var(--accent-teal);
+    }
+
+    .filter-tag svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .assets-header {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .assets-title {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .assets-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent-teal);
+    }
+
+    .assets-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .assets-list::-webkit-scrollbar { width: 4px; }
+    .assets-list::-webkit-scrollbar-track { background: transparent; }
+    .assets-list::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 2px; }
+
+    .asset-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .asset-item:hover { background: var(--bg-card); }
+    .asset-item.highlighted {
+      background: rgba(20, 184, 166, 0.1);
+      border: 1px solid var(--accent-teal);
+    }
+
+    .asset-status-icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .asset-status-icon.healthy { color: var(--status-healthy); }
+    .asset-status-icon.inuse { color: var(--status-inuse); }
+    .asset-status-icon.attention { color: var(--status-attention); }
+    .asset-status-icon.critical { color: var(--status-critical); }
+
+    .asset-info { flex: 1; min-width: 0; }
+    .asset-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .asset-meta { font-size: 11px; color: var(--text-muted); }
+    .asset-meta span { margin-right: 8px; }
+    .asset-meta .location { color: var(--accent-teal); }
+    .asset-meta .battery { color: var(--text-secondary); }
+    .asset-meta .battery.low { color: var(--accent-amber); }
+
+    /* ==================== CENTER - ISOMETRIC FLOOR ==================== */
+    .center-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(ellipse at center, #0d1419 0%, #070B0F 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .floor-header {
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--glass-border);
+      background: var(--panel-bg);
+      z-index: 10;
+    }
+
+    .floor-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .floor-title svg {
+      width: 20px;
+      height: 20px;
+      color: var(--accent-teal);
+    }
+
+    .floor-title h2 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .floor-title span {
+      font-size: 12px;
+      color: var(--accent-teal);
+      font-weight: 500;
+    }
+
+    .floor-meta {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .floor-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .floor-meta-item span { color: var(--text-secondary); }
+
+    /* Event Ticker - Seamless scrolling marquee */
+    .event-ticker {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 36px;
+      background: linear-gradient(90deg, rgba(7, 11, 15, 0.98) 0%, rgba(13, 20, 25, 0.95) 50%, rgba(7, 11, 15, 0.98) 100%);
+      border-bottom: 1px solid var(--glass-border);
+      overflow: hidden;
+      z-index: 100;
+      display: none;
+    }
+
+    .event-ticker.active {
+      display: flex;
+    }
+
+    .ticker-label {
+      flex-shrink: 0;
+      width: 80px;
+      height: 100%;
+      background: linear-gradient(90deg, var(--status-critical) 0%, rgba(239, 68, 68, 0.8) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: white;
+      z-index: 2;
+    }
+
+    .ticker-label .pulse {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: white;
+      animation: ticker-pulse 1s ease-in-out infinite;
+    }
+
+    @keyframes ticker-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .ticker-track {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+      mask-image: linear-gradient(90deg, transparent 0%, black 3%, black 97%, transparent 100%);
+    }
+
+    .ticker-content {
+      display: inline-flex;
+      align-items: center;
+      height: 36px;
+      white-space: nowrap;
+      will-change: transform;
+      animation: ticker-scroll var(--ticker-duration, 60s) linear infinite;
+    }
+
+    .ticker-track:hover .ticker-content {
+      animation-play-state: paused;
+    }
+
+    @keyframes ticker-scroll {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
+    }
+
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 20px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      height: 100%;
+      flex-shrink: 0;
+    }
+
+    .ticker-item::after {
+      content: '•';
+      margin-left: 20px;
+      color: var(--glass-border);
+    }
+
+    .ticker-item .ticker-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+
+    .ticker-item .ticker-icon.move {
+      background: rgba(20, 184, 166, 0.2);
+      color: var(--accent-teal);
+    }
+
+    .ticker-item .ticker-icon.alert {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--status-critical);
+    }
+
+    .ticker-item .ticker-icon.warning {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--status-attention);
+    }
+
+    .ticker-item .ticker-icon.system {
+      background: rgba(59, 130, 246, 0.2);
+      color: var(--accent-blue);
+    }
+
+    .ticker-item .ticker-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .ticker-item .ticker-text {
+      max-width: 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ticker-item .ticker-text strong {
+      color: var(--text-primary);
+    }
+
+    /* New item animation */
+    .ticker-item.new-item {
+      animation: ticker-item-flash 0.5s ease-out;
+    }
+
+    @keyframes ticker-item-flash {
+      0% { background: rgba(20, 184, 166, 0.3); }
+      100% { background: transparent; }
+    }
+
+    .floor-container {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      cursor: grab;
+      perspective: 1200px;
+    }
+
+    .floor-container:active { cursor: grabbing; }
+
+    /* Isometric Scene Container */
+    .iso-scene {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 1000px;
+      height: 700px;
+      transform-style: preserve-3d;
+      transform: translate(-50%, -50%) rotateX(60deg) rotateZ(-45deg) scale(0.7);
+      transition: transform 0.15s ease-out;
+    }
+
+    /* Floor Base */
+    .iso-floor {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(90deg, var(--floor-grid) 1px, transparent 1px),
+        linear-gradient(var(--floor-grid) 1px, transparent 1px),
+        linear-gradient(135deg, #0a1318 0%, #0d1a1f 50%, #0a1318 100%);
+      background-size: 40px 40px, 40px 40px, 100% 100%;
+      border: 2px solid rgba(20, 184, 166, 0.3);
+      box-shadow:
+        0 0 60px rgba(20, 184, 166, 0.1),
+        inset 0 0 100px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Room/Bay - 3D Box with walls */
+    .iso-room {
+      position: absolute;
+      transform-style: preserve-3d;
+    }
+
+    /* Room floor */
+    .iso-room .room-floor {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.05) 0%, rgba(20, 184, 166, 0.02) 100%);
+      border: 1px solid rgba(20, 184, 166, 0.3);
+    }
+
+    /* Room walls - back wall (top edge) */
+    .iso-room .wall-back {
+      position: absolute;
+      width: 100%;
+      height: 50px;
+      top: 0;
+      left: 0;
+      background: linear-gradient(180deg, var(--wall-top) 0%, var(--wall-front) 100%);
+      transform-origin: top center;
+      transform: rotateX(-90deg);
+      border-bottom: 2px solid rgba(20, 184, 166, 0.4);
+    }
+
+    /* Room walls - left wall */
+    .iso-room .wall-left {
+      position: absolute;
+      width: 50px;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: linear-gradient(90deg, var(--wall-side) 0%, var(--wall-front) 100%);
+      transform-origin: left center;
+      transform: rotateY(90deg);
+      border-right: 2px solid rgba(20, 184, 166, 0.3);
+    }
+
+    /* Room label */
+    .iso-room .room-label {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent-teal);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(20, 184, 166, 0.5);
+      z-index: 10;
+    }
+
+    /* Critical room styling */
+    .iso-room.critical .room-floor {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.03) 100%);
+      border-color: rgba(239, 68, 68, 0.4);
+      animation: critical-pulse 2s ease-in-out infinite;
+    }
+
+    .iso-room.critical .wall-back,
+    .iso-room.critical .wall-left {
+      background: linear-gradient(180deg, #3d1f1f 0%, #2a1515 100%);
+    }
+
+    .iso-room.critical .room-label {
+      color: var(--status-critical);
+      text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+    }
+
+    @keyframes critical-pulse {
+      0%, 100% { box-shadow: inset 0 0 30px rgba(239, 68, 68, 0.1); }
+      50% { box-shadow: inset 0 0 50px rgba(239, 68, 68, 0.2); }
+    }
+
+    /* 3D Bed */
+    .iso-bed {
+      position: absolute;
+      width: 80px;
+      height: 45px;
+      transform-style: preserve-3d;
+    }
+
+    .iso-bed .bed-base {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: var(--bed-top);
+      border: 1px solid rgba(30, 58, 95, 0.6);
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .iso-bed .bed-front {
+      position: absolute;
+      width: 100%;
+      height: 15px;
+      bottom: 0;
+      left: 0;
+      background: var(--bed-front);
+      transform-origin: bottom center;
+      transform: rotateX(-90deg);
+      border-top: 1px solid rgba(30, 58, 95, 0.4);
+    }
+
+    .iso-bed .bed-side {
+      position: absolute;
+      width: 15px;
+      height: 100%;
+      top: 0;
+      right: 0;
+      background: var(--bed-side);
+      transform-origin: right center;
+      transform: rotateY(90deg);
+      border-left: 1px solid rgba(30, 58, 95, 0.3);
+    }
+
+    .iso-bed .bed-headboard {
+      position: absolute;
+      width: 100%;
+      height: 25px;
+      top: 0;
+      left: 0;
+      background: linear-gradient(180deg, #2a4a6a 0%, var(--bed-top) 100%);
+      transform-origin: top center;
+      transform: rotateX(-90deg);
+      border-bottom: 1px solid rgba(42, 74, 106, 0.5);
+    }
+
+    .iso-bed .bed-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.4);
+      z-index: 5;
+    }
+
+    /* Equipment container on bed */
+    .iso-bed .bed-equipment {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      display: flex;
+      gap: 4px;
+      z-index: 20;
+      transform: translateZ(20px);
+    }
+
+    /* 3D Equipment Marker */
+    .equipment-marker {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .equipment-marker::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .equipment-marker::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 20px;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, transparent 0%, currentColor 100%);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .equipment-marker:hover {
+      transform: translateZ(10px) scale(1.3);
+    }
+
+    .equipment-marker:hover::before {
+      border-color: currentColor;
+      animation: marker-ring 1s ease-out infinite;
+    }
+
+    .equipment-marker:hover::after {
+      opacity: 0.3;
+    }
+
+    .equipment-marker.healthy {
+      background: radial-gradient(circle at 30% 30%, #34d399, var(--status-healthy));
+      box-shadow: 0 0 10px var(--status-healthy), 0 2px 4px rgba(0,0,0,0.3);
+      color: var(--status-healthy);
+    }
+
+    .equipment-marker.inuse {
+      background: radial-gradient(circle at 30% 30%, #60a5fa, var(--status-inuse));
+      box-shadow: 0 0 10px var(--status-inuse), 0 2px 4px rgba(0,0,0,0.3);
+      color: var(--status-inuse);
+    }
+
+    .equipment-marker.attention {
+      background: radial-gradient(circle at 30% 30%, #fbbf24, var(--status-attention));
+      box-shadow: 0 0 10px var(--status-attention), 0 2px 4px rgba(0,0,0,0.3);
+      color: var(--status-attention);
+    }
+
+    .equipment-marker.critical {
+      background: radial-gradient(circle at 30% 30%, #f87171, var(--status-critical));
+      box-shadow: 0 0 15px var(--status-critical), 0 2px 4px rgba(0,0,0,0.3);
+      color: var(--status-critical);
+      animation: critical-marker 1s ease-in-out infinite;
+    }
+
+    @keyframes marker-ring {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+
+    @keyframes critical-marker {
+      0%, 100% { box-shadow: 0 0 15px var(--status-critical), 0 2px 4px rgba(0,0,0,0.3); }
+      50% { box-shadow: 0 0 25px var(--status-critical), 0 0 40px rgba(239, 68, 68, 0.3), 0 2px 4px rgba(0,0,0,0.3); }
+    }
+
+    .equipment-marker.highlighted {
+      transform: translateZ(20px) scale(1.5);
+      z-index: 100;
+    }
+
+    .equipment-marker.highlighted::before {
+      border-color: white;
+      animation: highlight-pulse 0.8s ease-in-out infinite;
+    }
+
+    @keyframes highlight-pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0; }
+    }
+
+    /* Nurse Station - 3D Desk */
+    .iso-station {
+      position: absolute;
+      transform-style: preserve-3d;
+    }
+
+    .iso-station .station-base {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+    }
+
+    .iso-station .station-desk {
+      position: absolute;
+      width: 60%;
+      height: 30px;
+      top: 20px;
+      left: 20%;
+      background: #2a3f55;
+      transform: translateZ(25px);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .iso-station .station-label {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    /* Storage Zone */
+    .iso-storage {
+      position: absolute;
+      transform-style: preserve-3d;
+    }
+
+    .iso-storage .storage-floor {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(167, 139, 250, 0.08) 0%, rgba(167, 139, 250, 0.02) 100%);
+      border: 1px dashed rgba(167, 139, 250, 0.4);
+    }
+
+    .iso-storage .storage-label {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--accent-purple);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .iso-storage .storage-equipment {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      transform: translateZ(10px);
+    }
+
+    /* Floor Controls */
+    .floor-controls {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 20px;
+      background: var(--panel-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .legend-dot.healthy { background: var(--status-healthy); box-shadow: 0 0 6px var(--status-healthy); }
+    .legend-dot.inuse { background: var(--status-inuse); box-shadow: 0 0 6px var(--status-inuse); }
+    .legend-dot.attention { background: var(--status-attention); box-shadow: 0 0 6px var(--status-attention); }
+    .legend-dot.critical { background: var(--status-critical); box-shadow: 0 0 6px var(--status-critical); }
+
+    .divider {
+      width: 1px;
+      height: 20px;
+      background: var(--glass-border);
+    }
+
+    .zoom-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .zoom-btn {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .zoom-btn:hover {
+      border-color: var(--accent-teal);
+      color: var(--accent-teal);
+    }
+
+    .zoom-level {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      min-width: 45px;
+      text-align: center;
+    }
+
+    .reset-btn {
+      padding: 6px 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 6px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .reset-btn:hover {
+      border-color: var(--accent-teal);
+      color: var(--accent-teal);
+    }
+
+    .reset-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .timestamp {
+      position: absolute;
+      bottom: 80px;
+      left: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      z-index: 100;
+    }
+
+    /* ==================== RIGHT PANEL ==================== */
+    .right-panel {
+      width: 300px;
+      background: var(--panel-bg);
+      border-left: 1px solid var(--glass-border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .right-section {
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .section-header {
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-header svg {
+      width: 16px;
+      height: 16px;
+      color: var(--text-muted);
+    }
+
+    .section-header h3 {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .section-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 2px 8px;
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--status-critical);
+      border-radius: 10px;
+    }
+
+    .section-content {
+      padding: 0 16px 16px;
+    }
+
+    .alert-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+
+    .alert-item {
+      padding: 10px 12px;
+      background: var(--bg-card);
+      border-radius: 8px;
+      border-left: 3px solid;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .alert-item:hover { background: var(--bg-elevated); }
+    .alert-item.critical { border-color: var(--status-critical); background: rgba(239, 68, 68, 0.08); }
+    .alert-item.warning { border-color: var(--accent-amber); background: rgba(245, 158, 11, 0.08); }
+    .alert-item.info { border-color: var(--accent-blue); }
+
+    .alert-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .alert-item.critical .alert-title { color: var(--status-critical); }
+    .alert-item.warning .alert-title { color: var(--accent-amber); }
+
+    .alert-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .simulator-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sim-status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    .sim-status-indicator .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .sim-status-indicator.running .dot {
+      background: var(--status-healthy);
+      animation: pulse-live 1.5s ease-in-out infinite;
+    }
+
+    .sim-status-indicator.stopped .dot { background: var(--text-muted); }
+    .sim-status-indicator.running { color: var(--status-healthy); }
+    .sim-status-indicator.stopped { color: var(--text-muted); }
+
+    /* Live Event Feed */
+    .live-feed {
+      max-height: 180px;
+      overflow-y: auto;
+      margin-top: 12px;
+      border-top: 1px solid var(--glass-border);
+      padding-top: 12px;
+    }
+
+    .live-feed-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .live-feed-title .pulse-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--status-critical);
+      animation: pulse-live 1s ease-in-out infinite;
+    }
+
+    .live-feed-title.inactive .pulse-dot {
+      background: var(--text-muted);
+      animation: none;
+    }
+
+    .feed-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 8px;
+      margin-bottom: 4px;
+      background: rgba(20, 184, 166, 0.05);
+      border-left: 2px solid var(--accent-teal);
+      border-radius: 0 4px 4px 0;
+      font-size: 11px;
+      animation: feed-slide-in 0.3s ease-out;
+    }
+
+    .feed-item.alert-item {
+      background: rgba(239, 68, 68, 0.1);
+      border-left-color: var(--status-critical);
+    }
+
+    .feed-item.alert-item.warning {
+      background: rgba(245, 158, 11, 0.1);
+      border-left-color: var(--status-attention);
+    }
+
+    @keyframes feed-slide-in {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .feed-time {
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .feed-content {
+      flex: 1;
+      color: var(--text-secondary);
+      line-height: 1.3;
+    }
+
+    .feed-content strong {
+      color: var(--text-primary);
+    }
+
+    .feed-empty {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 11px;
+      padding: 20px 0;
+    }
+
+    /* Simulator running indicator on floor */
+    .floor-container.sim-active::after {
+      content: 'SIMULATION ACTIVE';
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(239, 68, 68, 0.9);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      z-index: 1000;
+      animation: sim-badge-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes sim-badge-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+      50% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+    }
+
+    /* Moving equipment marker */
+    .equipment-marker.moving {
+      animation: equipment-move 0.5s ease-out;
+    }
+
+    @keyframes equipment-move {
+      0% { transform: translateZ(30px) scale(1.5); box-shadow: 0 0 30px var(--accent-cyan); }
+      100% { transform: translateZ(0) scale(1); }
+    }
+
+    .equipment-marker.just-moved::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border: 2px solid var(--accent-cyan);
+      border-radius: 50%;
+      animation: move-ring 1s ease-out forwards;
+    }
+
+    @keyframes move-ring {
+      0% { transform: scale(0.5); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+
+    /* Tick counter */
+    .tick-counter {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .tick-counter .tick-label { flex: 1; }
+    .tick-counter .tick-value {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent-teal);
+    }
+
+    .sim-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .sim-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .sim-btn svg { width: 14px; height: 14px; }
+
+    .sim-btn.start {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--status-healthy);
+      color: var(--status-healthy);
+    }
+
+    .sim-btn.start:hover { background: rgba(16, 185, 129, 0.25); }
+
+    .sim-btn.stop {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+    }
+
+    .sim-btn.stop:hover {
+      border-color: var(--status-critical);
+      color: var(--status-critical);
+    }
+
+    .scenario-select {
+      padding: 8px 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--text-primary);
+      cursor: pointer;
+      outline: none;
+    }
+
+    .scenario-select:focus { border-color: var(--accent-teal); }
+
+    .scenario-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .audit-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .audit-stat { text-align: center; }
+
+    .audit-stat-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .audit-stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--accent-teal);
+    }
+
+    .block-chain-visual {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 8px 0;
+    }
+
+    .block-node {
+      min-width: 48px;
+      height: 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .block-node:hover {
+      border-color: var(--accent-teal);
+      color: var(--accent-teal);
+    }
+
+    .block-node.latest {
+      background: rgba(20, 184, 166, 0.15);
+      border-color: var(--accent-teal);
+      color: var(--accent-teal);
+    }
+
+    .block-connector {
+      width: 12px;
+      height: 2px;
+      background: var(--glass-border);
+      flex-shrink: 0;
+    }
+
+    .block-ellipsis {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .savings-display {
+      text-align: center;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), rgba(16, 185, 129, 0.05));
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .savings-amount {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--accent-teal);
+      margin-bottom: 4px;
+    }
+
+    .savings-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .savings-bar {
+      height: 6px;
+      background: var(--bg-card);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .savings-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-teal), var(--accent-emerald));
+      border-radius: 3px;
+      transition: width 0.5s ease-out;
+    }
+
+    /* ==================== TOOLTIP ==================== */
+    .tooltip {
+      position: fixed;
+      z-index: 10000;
+      background: var(--panel-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 14px;
+      min-width: 220px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.15s, transform 0.15s;
+    }
+
+    .tooltip.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tooltip-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .tooltip-status {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .tooltip-status.healthy { background: var(--status-healthy); }
+    .tooltip-status.inuse { background: var(--status-inuse); }
+    .tooltip-status.attention { background: var(--status-attention); }
+    .tooltip-status.critical { background: var(--status-critical); }
+
+    .tooltip-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .tooltip-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 0;
+    }
+
+    .tooltip-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .tooltip-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-primary);
+    }
+
+    .tooltip-value.healthy { color: var(--status-healthy); }
+    .tooltip-value.warning { color: var(--accent-amber); }
+    .tooltip-value.critical { color: var(--status-critical); }
+
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-void);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--glass-border);
+      border-top-color: var(--accent-teal);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .empty-state {
+      padding: 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <!-- TOP BAR -->
+  <header class="top-bar">
+    <div class="top-bar-left">
+      <a href="/" class="home-btn" title="Back to Home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </a>
+      <div class="nav-divider"></div>
+      <a href="/" class="brand">
+        <div class="soundwave">
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">OR-CARE-STRA</span>
+          <span class="brand-sub">ENSEMBLE</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="top-bar-center">
+      <div class="stat-item">
+        <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+        </svg>
+        <div>
+          <div class="stat-label">Total Assets</div>
+          <div class="stat-value" id="stat-total">--</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+        <div>
+          <div class="stat-label">Online</div>
+          <div class="stat-value" id="stat-online">--</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        <div>
+          <div class="stat-label">Alerts</div>
+          <div class="stat-value alert" id="stat-alerts">--</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="top-bar-right">
+      <div class="ward-tabs">
+        <button class="ward-tab active" data-ward="icu">ICU</button>
+        <button class="ward-tab" data-ward="or">OR</button>
+        <button class="ward-tab" data-ward="ed">ED</button>
+        <button class="ward-tab" data-ward="all">ALL</button>
+      </div>
+      <div class="live-indicator">
+        <span class="live-dot"></span>
+        LIVE
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <div class="main-container">
+    <!-- LEFT PANEL -->
+    <aside class="left-panel">
+      <div class="panel-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        Equipment Scan
+      </div>
+
+      <div class="search-box">
+        <input type="text" class="search-input" id="asset-search" placeholder="search --asset --tag">
+      </div>
+
+      <div class="vitals-section">
+        <div class="section-title">Vitals</div>
+        <div class="vitals-grid">
+          <div class="vital-item">
+            <span class="vital-dot healthy"></span>
+            <span class="vital-label">Operational</span>
+            <span class="vital-count healthy" id="vital-operational">--</span>
+          </div>
+          <div class="vital-item">
+            <span class="vital-dot inuse"></span>
+            <span class="vital-label">In Use</span>
+            <span class="vital-count inuse" id="vital-inuse">--</span>
+          </div>
+          <div class="vital-item">
+            <span class="vital-dot attention"></span>
+            <span class="vital-label">Maintenance</span>
+            <span class="vital-count attention" id="vital-maintenance">--</span>
+          </div>
+          <div class="vital-item">
+            <span class="vital-dot critical"></span>
+            <span class="vital-label">Offline</span>
+            <span class="vital-count critical" id="vital-offline">--</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="type-filters">
+        <div class="section-title">Equipment Type</div>
+        <div class="filter-tags">
+          <button class="filter-tag active" data-type="all">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            All
+          </button>
+          <button class="filter-tag" data-type="patient_monitor">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            Monitors
+          </button>
+          <button class="filter-tag" data-type="ventilator">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            Vents
+          </button>
+          <button class="filter-tag" data-type="infusion_pump">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+            Pumps
+          </button>
+          <button class="filter-tag" data-type="defibrillator">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            Defib
+          </button>
+        </div>
+      </div>
+
+      <div class="assets-header">
+        <span class="assets-title">Tracked Assets</span>
+        <span class="assets-count" id="assets-count">[0]</span>
+      </div>
+
+      <div class="assets-list" id="assets-list">
+        <div class="empty-state">Loading assets...</div>
+      </div>
+    </aside>
+
+    <!-- CENTER - ISOMETRIC FLOOR PLAN -->
+    <main class="center-panel">
+      <div class="floor-header">
+        <div class="floor-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+          </svg>
+          <h2>ICU LEVEL 2</h2>
+          <span>· ISOMETRIC VIEW</span>
+        </div>
+        <div class="floor-meta">
+          <div class="floor-meta-item">SCAN: <span>ACTIVE</span></div>
+          <div class="floor-meta-item">MODE: <span>REALTIME</span></div>
+          <div class="floor-meta-item">RES: <span>1:50</span></div>
+        </div>
+      </div>
+
+      <!-- Event Ticker - Seamless scrolling marquee -->
+      <div class="event-ticker" id="event-ticker">
+        <div class="ticker-label">
+          <span class="pulse"></span>
+          LIVE
+        </div>
+        <div class="ticker-track" id="ticker-track">
+          <div class="ticker-content" id="ticker-content"></div>
+        </div>
+      </div>
+
+      <div class="floor-container" id="floor-container">
+        <!-- Isometric 3D Scene -->
+        <div class="iso-scene" id="iso-scene">
+          <div class="iso-floor"></div>
+
+          <!-- Bay A - Top Left -->
+          <div class="iso-room" id="bay-a" style="left: 50px; top: 50px; width: 280px; height: 200px;">
+            <div class="room-floor"></div>
+            <div class="wall-back"></div>
+            <div class="wall-left"></div>
+            <div class="room-label">Bay A</div>
+
+            <div class="iso-bed" style="left: 20px; top: 50px;">
+              <div class="bed-base"></div>
+              <div class="bed-front"></div>
+              <div class="bed-side"></div>
+              <div class="bed-headboard"></div>
+              <div class="bed-label">A1</div>
+              <div class="bed-equipment" data-bed="A1"></div>
+            </div>
+            <div class="iso-bed" style="left: 120px; top: 50px;">
+              <div class="bed-base"></div>
+              <div class="bed-front"></div>
+              <div class="bed-side"></div>
+              <div class="bed-headboard"></div>
+              <div class="bed-label">A2</div>
+              <div class="bed-equipment" data-bed="A2"></div>
+            </div>
+            <div class="iso-bed" style="left: 20px; top: 120px;">
+              <div class="bed-base"></div>
+              <div class="bed-front"></div>
+              <div class="bed-side"></div>
+              <div class="bed-headboard"></div>
+              <div class="bed-label">A3</div>
+              <div class="bed-equipment" data-bed="A3"></div>
+            </div>
+            <div class="iso-bed" style="left: 120px; top: 120px;">
+              <div class="bed-base"></div>
+              <div class="bed-front"></div>
+              <div class="bed-side"></div>
+              <div class="bed-headboard"></div>
+              <div class="bed-label">A4</div>
+              <div class="bed-equipment" data-bed="A4"></div>
+            </div>
+          </div>
+
+          <!-- Bay B - Top Center -->
+          <div class="iso-room" id="bay-b" style="left: 360px; top: 50px; width: 280px; height: 200px;">
+            <div class="room-floor"></div>
+            <div class="wall-back"></div>
+            <div class="wall-left"></div>
+            <div class="room-label">Bay B</div>
+
+            <div class="iso-bed" style="left: 20px; top: 50px;">
+              <div class="bed-base"></div>
+              <div class="bed-front"></div>
+              <div class="bed-side"></div>
+              <div class="bed-headboard"></div>
+              <div class="bed-label">B1</div>
+              <div class="bed-equipment" data-bed="B1"></div>
+            </div>
+            <div class="iso-bed" style="left: 120px; top: 50px;">
+              <div class="bed-base"></div>
+              <div class="bed-front"></div>
+              <div class="bed-side"></div>
+              <div class="bed-headboard"></div>
+              <div class="bed-label">B2</div>
+              <div class="bed-equipment" data-bed="B2"></div>
+            </div>
+            <div class="iso-bed" style="left: 20px; top: 120px;">
+              <div class="bed-base"></div>
+              <div class="bed-front"></div>
+              <div class="bed-side"></div>
+              <div class="bed-headboard"></div>
+              <div class="bed-label">B3</div>
+              <div class="bed-equipment" data-bed="B3"></div>
+            </div>
+            <div class="iso-bed" style="left: 120px; top: 120px;">
+              <div class="bed-base"></div>
+              <div class="bed-front"></div>
+              <div class="bed-side"></div>
+              <div class="bed-headboard"></div>
+              <div class="bed-label">B4</div>
+              <div class="bed-equipment" data-bed="B4"></div>
+            </div>
+          </div>
+
+          <!-- ISO-1 Critical - Top Right -->
+          <div class="iso-room critical" id="iso-1" style="left: 670px; top: 50px; width: 280px; height: 200px;">
+            <div class="room-floor"></div>
+            <div class="wall-back"></div>
+            <div class="wall-left"></div>
+            <div class="room-label">ISO-1 · CRITICAL</div>
+
+            <div class="iso-bed" style="left: 100px; top: 80px;">
+              <div class="bed-base"></div>
+              <div class="bed-front"></div>
+              <div class="bed-side"></div>
+              <div class="bed-headboard"></div>
+              <div class="bed-label">ISO</div>
+              <div class="bed-equipment" data-bed="ISO-1"></div>
+            </div>
+          </div>
+
+          <!-- Nurse Station - Middle Left -->
+          <div class="iso-station" style="left: 50px; top: 280px; width: 140px; height: 100px;">
+            <div class="station-base"></div>
+            <div class="station-desk"></div>
+            <div class="station-label">Nurse Station</div>
+          </div>
+
+          <!-- Equipment Storage - Middle Center -->
+          <div class="iso-storage" style="left: 220px; top: 280px; width: 200px; height: 100px;">
+            <div class="storage-floor"></div>
+            <div class="storage-label">Equipment Storage</div>
+            <div class="storage-equipment" data-bed="STORAGE"></div>
+          </div>
+
+          <!-- Utility - Middle Right -->
+          <div class="iso-storage" style="left: 450px; top: 280px; width: 140px; height: 100px;">
+            <div class="storage-floor"></div>
+            <div class="storage-label">Utility</div>
+            <div class="storage-equipment" data-bed="UTILITY"></div>
+          </div>
+
+          <!-- Bay C - Bottom -->
+          <div class="iso-room" id="bay-c" style="left: 50px; top: 410px; width: 400px; height: 220px;">
+            <div class="room-floor"></div>
+            <div class="wall-back"></div>
+            <div class="wall-left"></div>
+            <div class="room-label">Bay C</div>
+
+            <div class="iso-bed" style="left: 20px; top: 50px;">
+              <div class="bed-base"></div>
+              <div class="bed-front"></div>
+              <div class="bed-side"></div>
+              <div class="bed-headboard"></div>
+              <div class="bed-label">C1</div>
+              <div class="bed-equipment" data-bed="C1"></div>
+            </div>
+            <div class="iso-bed" style="left: 120px; top: 50px;">
+              <div class="bed-base"></div>
+              <div class="bed-front"></div>
+              <div class="bed-side"></div>
+              <div class="bed-headboard"></div>
+              <div class="bed-label">C2</div>
+              <div class="bed-equipment" data-bed="C2"></div>
+            </div>
+            <div class="iso-bed" style="left: 220px; top: 50px;">
+              <div class="bed-base"></div>
+              <div class="bed-front"></div>
+              <div class="bed-side"></div>
+              <div class="bed-headboard"></div>
+              <div class="bed-label">C3</div>
+              <div class="bed-equipment" data-bed="C3"></div>
+            </div>
+            <div class="iso-bed" style="left: 20px; top: 130px;">
+              <div class="bed-base"></div>
+              <div class="bed-front"></div>
+              <div class="bed-side"></div>
+              <div class="bed-headboard"></div>
+              <div class="bed-label">C4</div>
+              <div class="bed-equipment" data-bed="C4"></div>
+            </div>
+            <div class="iso-bed" style="left: 120px; top: 130px;">
+              <div class="bed-base"></div>
+              <div class="bed-front"></div>
+              <div class="bed-side"></div>
+              <div class="bed-headboard"></div>
+              <div class="bed-label">C5</div>
+              <div class="bed-equipment" data-bed="C5"></div>
+            </div>
+            <div class="iso-bed" style="left: 220px; top: 130px;">
+              <div class="bed-base"></div>
+              <div class="bed-front"></div>
+              <div class="bed-side"></div>
+              <div class="bed-headboard"></div>
+              <div class="bed-label">C6</div>
+              <div class="bed-equipment" data-bed="C6"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timestamp" id="timestamp"></div>
+
+        <div class="floor-controls">
+          <div class="legend">
+            <div class="legend-item"><span class="legend-dot healthy"></span> Healthy</div>
+            <div class="legend-item"><span class="legend-dot inuse"></span> In Use</div>
+            <div class="legend-item"><span class="legend-dot attention"></span> Attention</div>
+            <div class="legend-item"><span class="legend-dot critical"></span> Critical</div>
+          </div>
+          <div class="divider"></div>
+          <div class="zoom-controls">
+            <button class="zoom-btn" id="zoom-out">−</button>
+            <span class="zoom-level" id="zoom-level">70%</span>
+            <button class="zoom-btn" id="zoom-in">+</button>
+          </div>
+          <button class="reset-btn" id="reset-view">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+            </svg>
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <div class="loading-overlay" id="floor-loading">
+        <div class="loading-spinner"></div>
+      </div>
+    </main>
+
+    <!-- RIGHT PANEL -->
+    <aside class="right-panel">
+      <div class="right-section">
+        <div class="section-header">
+          <div class="section-header-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <h3>System Alerts</h3>
+          </div>
+          <span class="section-badge" id="alert-badge">0</span>
+        </div>
+        <div class="section-content">
+          <div class="alert-list" id="alert-list">
+            <div class="empty-state">No active alerts</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-section">
+        <div class="section-header">
+          <div class="section-header-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="2"/>
+              <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/>
+            </svg>
+            <h3>IoT Simulator</h3>
+          </div>
+          <span class="sim-status-indicator stopped" id="sim-status">
+            <span class="dot"></span>
+            <span id="sim-status-text">STOPPED</span>
+          </span>
+        </div>
+        <div class="section-content">
+          <div class="simulator-controls">
+            <div class="sim-buttons">
+              <button class="sim-btn start" id="sim-start">
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Start
+              </button>
+              <button class="sim-btn stop" id="sim-stop">
+                <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
+                Stop
+              </button>
+            </div>
+            <div>
+              <div class="scenario-label">Scenario:</div>
+              <select class="scenario-select" id="sim-scenario">
+                <option value="normal">Normal (15%)</option>
+                <option value="busy">Busy (30%)</option>
+                <option value="quiet">Quiet (5%)</option>
+                <option value="theft">Theft Simulation</option>
+                <option value="hoarding">Hoarding Detection</option>
+              </select>
+            </div>
+            <div class="tick-counter" id="tick-counter" style="display: none;">
+              <span class="tick-label">Events this session:</span>
+              <span class="tick-value" id="event-count">0</span>
+            </div>
+            <div class="live-feed" id="live-feed">
+              <div class="live-feed-title inactive" id="feed-title">
+                <span class="pulse-dot"></span>
+                Live Event Feed
+              </div>
+              <div id="feed-items">
+                <div class="feed-empty">Start simulator to see live events</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-section">
+        <div class="section-header">
+          <div class="section-header-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+            </svg>
+            <h3>Audit Chain</h3>
+          </div>
+        </div>
+        <div class="section-content">
+          <div class="audit-stats">
+            <div class="audit-stat">
+              <div class="audit-stat-label">Height</div>
+              <div class="audit-stat-value" id="chain-height">0</div>
+            </div>
+            <div class="audit-stat">
+              <div class="audit-stat-label">24h TXs</div>
+              <div class="audit-stat-value" id="chain-txs">0</div>
+            </div>
+          </div>
+          <div class="block-chain-visual" id="block-chain">
+            <div class="block-node latest">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-section" style="border-bottom: none;">
+        <div class="section-header">
+          <div class="section-header-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+            <h3>Monthly Savings</h3>
+          </div>
+        </div>
+        <div class="section-content">
+          <div class="savings-display">
+            <div class="savings-amount" id="savings-amount">R0</div>
+            <div class="savings-label">projected annual: <span id="savings-annual">R0</span></div>
+            <div class="savings-bar">
+              <div class="savings-bar-fill" id="savings-bar" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- TOOLTIP -->
+  <div class="tooltip" id="tooltip">
+    <div class="tooltip-header">
+      <span class="tooltip-status" id="tooltip-status"></span>
+      <span class="tooltip-name" id="tooltip-name">Equipment Name</span>
+    </div>
+    <div class="tooltip-row">
+      <span class="tooltip-label">Type</span>
+      <span class="tooltip-value" id="tooltip-type">--</span>
+    </div>
+    <div class="tooltip-row">
+      <span class="tooltip-label">Status</span>
+      <span class="tooltip-value" id="tooltip-status-text">--</span>
+    </div>
+    <div class="tooltip-row">
+      <span class="tooltip-label">Location</span>
+      <span class="tooltip-value" id="tooltip-location">--</span>
+    </div>
+    <div class="tooltip-row">
+      <span class="tooltip-label">Battery</span>
+      <span class="tooltip-value" id="tooltip-battery">--</span>
+    </div>
+    <div class="tooltip-row">
+      <span class="tooltip-label">Last Seen</span>
+      <span class="tooltip-value" id="tooltip-lastseen">--</span>
+    </div>
+  </div>
+
+  <script>
+    // ==================== STATE ====================
+    let assets = [];
+    let alerts = [];
+    let stats = {};
+    let simulatorStatus = { running: false, scenario: 'normal' };
+    let currentFilter = 'all';
+    let searchQuery = '';
+    let currentWard = 'icu';
+    let ws = null;
+    let eventCount = 0;
+    let liveEvents = [];
+    const MAX_LIVE_EVENTS = 15;
+
+    // Isometric view state
+    let zoom = 0.7;
+    let rotateX = 60;
+    let rotateZ = -45;
+    let panX = 0;
+    let panY = 0;
+    let isDragging = false;
+    let isRotating = false;
+    let startX, startY;
+
+    const bedAssignments = {};
+    const beds = ['A1', 'A2', 'A3', 'A4', 'B1', 'B2', 'B3', 'B4', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'ISO-1'];
+
+    const tooltip = document.getElementById('tooltip');
+    const isoScene = document.getElementById('iso-scene');
+    const floorContainer = document.getElementById('floor-container');
+    const assetsList = document.getElementById('assets-list');
+    const alertList = document.getElementById('alert-list');
+
+    // ==================== INITIALIZATION ====================
+    async function init() {
+      updateTimestamp();
+      setInterval(updateTimestamp, 1000);
+
+      // Initialize ticker
+      initTicker();
+
+      await Promise.all([
+        loadAssets(),
+        loadStats(),
+        loadAlerts(),
+        loadBlockchainStatus()
+      ]);
+
+      document.getElementById('floor-loading').classList.add('hidden');
+      setupEventListeners();
+      connectWebSocket();
+    }
+
+    // ==================== DATA LOADING ====================
+    async function loadAssets() {
+      try {
+        const res = await fetch('/api/assets');
+        const data = await res.json();
+        assets = data.assets || [];
+        assignAssetsToBeds();
+        renderAssetsList();
+        renderFloorEquipment();
+        updateVitals();
+      } catch (err) {
+        console.error('Failed to load assets:', err);
+      }
+    }
+
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/dashboard/stats');
+        stats = await res.json();
+        document.getElementById('stat-total').textContent = stats.assets?.total || 0;
+        document.getElementById('stat-online').textContent = stats.assets?.online || 0;
+        document.getElementById('stat-alerts').textContent = stats.alerts?.open || 0;
+
+        const monthly = stats.savings?.monthly || 0;
+        const potential = stats.savings?.potential || 109000000;
+        document.getElementById('savings-amount').textContent = formatCurrency(monthly);
+        document.getElementById('savings-annual').textContent = formatCurrency(monthly * 12);
+        document.getElementById('savings-bar').style.width = `${Math.min((monthly * 12 / potential) * 100, 100)}%`;
+
+        if (stats.simulator) {
+          simulatorStatus = stats.simulator;
+          updateSimulatorUI();
+        }
+      } catch (err) {
+        console.error('Failed to load stats:', err);
+      }
+    }
+
+    async function loadAlerts() {
+      try {
+        const res = await fetch('/api/alerts?limit=10');
+        const data = await res.json();
+        alerts = data.alerts || [];
+        renderAlerts();
+      } catch (err) {
+        console.error('Failed to load alerts:', err);
+      }
+    }
+
+    async function loadBlockchainStatus() {
+      try {
+        const res = await fetch('/api/blockchain/status');
+        const data = await res.json();
+        document.getElementById('chain-height').textContent = data.chain_height?.toLocaleString() || '0';
+        document.getElementById('chain-txs').textContent = data.transactions_24h?.toLocaleString() || '0';
+        renderBlockChain(data.chain_height || 0);
+      } catch (err) {
+        console.error('Failed to load blockchain status:', err);
+      }
+    }
+
+    // ==================== BED ASSIGNMENTS ====================
+    function assignAssetsToBeds() {
+      Object.keys(bedAssignments).forEach(k => delete bedAssignments[k]);
+      const sortedAssets = [...assets].sort((a, b) => a.id - b.id);
+      sortedAssets.forEach((asset, index) => {
+        bedAssignments[asset.id] = index < beds.length ? beds[index] : 'STORAGE';
+      });
+    }
+
+    // ==================== RENDERING ====================
+    function renderAssetsList() {
+      const filtered = getFilteredAssets();
+      document.getElementById('assets-count').textContent = `[${filtered.length}]`;
+
+      if (filtered.length === 0) {
+        assetsList.innerHTML = '<div class="empty-state">No assets found</div>';
+        return;
+      }
+
+      assetsList.innerHTML = filtered.map(asset => {
+        const status = getAssetStatus(asset);
+        const statusIcon = getStatusIcon(status);
+        const bed = bedAssignments[asset.id] || 'UNKNOWN';
+        const batteryClass = asset.battery_level < 20 ? 'low' : '';
+
+        return `
+          <div class="asset-item" data-id="${asset.id}">
+            <span class="asset-status-icon ${status}">${statusIcon}</span>
+            <div class="asset-info">
+              <div class="asset-name">${asset.name}</div>
+              <div class="asset-meta">
+                <span class="location">${bed}</span>
+                <span class="battery ${batteryClass}">${asset.battery_level}%</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      assetsList.querySelectorAll('.asset-item').forEach(item => {
+        item.addEventListener('mouseenter', () => highlightEquipment(item.dataset.id, true));
+        item.addEventListener('mouseleave', () => highlightEquipment(item.dataset.id, false));
+      });
+    }
+
+    function renderFloorEquipment() {
+      document.querySelectorAll('.bed-equipment, .storage-equipment').forEach(container => {
+        container.innerHTML = '';
+      });
+
+      assets.forEach(asset => {
+        const bed = bedAssignments[asset.id];
+        const container = document.querySelector(`[data-bed="${bed}"]`);
+
+        if (container) {
+          const status = getAssetStatus(asset);
+          const marker = document.createElement('div');
+          marker.className = `equipment-marker ${status}`;
+          marker.dataset.id = asset.id;
+          marker.dataset.assetId = asset.id; // For highlight animation
+          marker.addEventListener('mouseenter', (e) => showTooltip(e, asset));
+          marker.addEventListener('mouseleave', hideTooltip);
+          container.appendChild(marker);
+        }
+      });
+    }
+
+    function renderAlerts() {
+      const criticalAlerts = alerts.filter(a => a.severity === 'critical' || a.severity === 'high');
+      document.getElementById('alert-badge').textContent = criticalAlerts.length;
+
+      if (alerts.length === 0) {
+        alertList.innerHTML = '<div class="empty-state">No active alerts</div>';
+        return;
+      }
+
+      alertList.innerHTML = alerts.slice(0, 5).map(alert => {
+        const severity = alert.severity === 'critical' || alert.severity === 'high' ? 'critical' :
+                        alert.severity === 'warning' ? 'warning' : 'info';
+        return `
+          <div class="alert-item ${severity}">
+            <div class="alert-title">${alert.title}</div>
+            <div class="alert-meta">${getTimeAgo(alert.created_at)}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderBlockChain(height) {
+      const container = document.getElementById('block-chain');
+      if (height === 0) {
+        container.innerHTML = '<div class="block-node latest">0</div>';
+        return;
+      }
+      const blocks = [];
+      const start = Math.max(0, height - 3);
+      blocks.push(`<div class="block-node latest">${height}</div>`);
+      for (let i = height - 1; i >= start && i >= 0; i--) {
+        blocks.push('<div class="block-connector"></div>');
+        blocks.push(`<div class="block-node">${i}</div>`);
+      }
+      if (start > 0) {
+        blocks.push('<div class="block-connector"></div>');
+        blocks.push('<span class="block-ellipsis">...</span>');
+      }
+      container.innerHTML = blocks.join('');
+    }
+
+    function updateVitals() {
+      const operational = assets.filter(a => a.status === 'online' && a.battery_level > 20).length;
+      const inuse = assets.filter(a => a.status === 'in_use').length;
+      const maintenance = assets.filter(a => a.status === 'maintenance' || (a.battery_level <= 20 && a.battery_level > 0)).length;
+      const offline = assets.filter(a => a.status === 'offline' || a.battery_level === 0).length;
+
+      document.getElementById('vital-operational').textContent = operational;
+      document.getElementById('vital-inuse').textContent = inuse;
+      document.getElementById('vital-maintenance').textContent = maintenance;
+      document.getElementById('vital-offline').textContent = offline;
+    }
+
+    // ==================== TOOLTIP ====================
+    function showTooltip(event, asset) {
+      const status = getAssetStatus(asset);
+      const bed = bedAssignments[asset.id] || 'UNKNOWN';
+
+      document.getElementById('tooltip-status').className = `tooltip-status ${status}`;
+      document.getElementById('tooltip-name').textContent = asset.name;
+      document.getElementById('tooltip-type').textContent = formatAssetType(asset.asset_type);
+      document.getElementById('tooltip-status-text').textContent = asset.status;
+      document.getElementById('tooltip-status-text').className = `tooltip-value ${status}`;
+      document.getElementById('tooltip-location').textContent = bed;
+
+      const batteryClass = asset.battery_level < 20 ? 'warning' : asset.battery_level < 10 ? 'critical' : '';
+      document.getElementById('tooltip-battery').textContent = `${asset.battery_level}%`;
+      document.getElementById('tooltip-battery').className = `tooltip-value ${batteryClass}`;
+      document.getElementById('tooltip-lastseen').textContent = formatTime(asset.last_seen);
+
+      const rect = event.target.getBoundingClientRect();
+      let x = rect.right + 10;
+      let y = rect.top;
+
+      if (x + 220 > window.innerWidth) x = rect.left - 230;
+      if (y + 200 > window.innerHeight) y = window.innerHeight - 210;
+
+      tooltip.style.left = `${x}px`;
+      tooltip.style.top = `${y}px`;
+      tooltip.classList.add('visible');
+    }
+
+    function hideTooltip() {
+      tooltip.classList.remove('visible');
+    }
+
+    // ==================== EQUIPMENT HIGHLIGHTING ====================
+    function highlightEquipment(assetId, highlight) {
+      const marker = document.querySelector(`.equipment-marker[data-id="${assetId}"]`);
+      const listItem = document.querySelector(`.asset-item[data-id="${assetId}"]`);
+      if (marker) marker.classList.toggle('highlighted', highlight);
+      if (listItem) listItem.classList.toggle('highlighted', highlight);
+    }
+
+    // ==================== ISOMETRIC INTERACTION ====================
+    function updateIsoTransform() {
+      isoScene.style.transform = `translate(calc(-50% + ${panX}px), calc(-50% + ${panY}px)) rotateX(${rotateX}deg) rotateZ(${rotateZ}deg) scale(${zoom})`;
+      document.getElementById('zoom-level').textContent = `${Math.round(zoom * 100)}%`;
+    }
+
+    function setupFloorInteraction() {
+      floorContainer.addEventListener('mousedown', (e) => {
+        if (e.shiftKey) {
+          isRotating = true;
+          isDragging = false;
+        } else {
+          isDragging = true;
+          isRotating = false;
+        }
+        startX = e.clientX;
+        startY = e.clientY;
+        floorContainer.style.cursor = isRotating ? 'move' : 'grabbing';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          panX += (e.clientX - startX) * 0.8;
+          panY += (e.clientY - startY) * 0.8;
+          startX = e.clientX;
+          startY = e.clientY;
+          updateIsoTransform();
+        } else if (isRotating) {
+          rotateZ += (e.clientX - startX) * 0.3;
+          rotateX = Math.max(30, Math.min(80, rotateX - (e.clientY - startY) * 0.3));
+          startX = e.clientX;
+          startY = e.clientY;
+          updateIsoTransform();
+        }
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        isRotating = false;
+        floorContainer.style.cursor = 'grab';
+      });
+
+      floorContainer.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.05 : 0.05;
+        zoom = Math.max(0.3, Math.min(1.5, zoom + delta));
+        updateIsoTransform();
+      });
+
+      document.getElementById('zoom-in').addEventListener('click', () => {
+        zoom = Math.min(1.5, zoom + 0.1);
+        updateIsoTransform();
+      });
+
+      document.getElementById('zoom-out').addEventListener('click', () => {
+        zoom = Math.max(0.3, zoom - 0.1);
+        updateIsoTransform();
+      });
+
+      document.getElementById('reset-view').addEventListener('click', () => {
+        zoom = 0.7;
+        rotateX = 60;
+        rotateZ = -45;
+        panX = 0;
+        panY = 0;
+        updateIsoTransform();
+      });
+    }
+
+    // ==================== EVENT LISTENERS ====================
+    function setupEventListeners() {
+      document.getElementById('asset-search').addEventListener('input', (e) => {
+        searchQuery = e.target.value.toLowerCase();
+        renderAssetsList();
+      });
+
+      document.querySelectorAll('.filter-tag').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentFilter = btn.dataset.type;
+          renderAssetsList();
+        });
+      });
+
+      document.querySelectorAll('.ward-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.ward-tab').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentWard = btn.dataset.ward;
+        });
+      });
+
+      document.getElementById('sim-start').addEventListener('click', startSimulator);
+      document.getElementById('sim-stop').addEventListener('click', stopSimulator);
+      document.getElementById('sim-scenario').addEventListener('change', (e) => setScenario(e.target.value));
+
+      setupFloorInteraction();
+    }
+
+    // ==================== SIMULATOR ====================
+    async function startSimulator() {
+      const scenario = document.getElementById('sim-scenario').value;
+      const startBtn = document.getElementById('sim-start');
+
+      // Disable button during request
+      startBtn.disabled = true;
+
+      try {
+        console.log('Starting simulator with scenario:', scenario);
+        const response = await fetch('/api/simulator/start', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scenario })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server returned ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('Simulator start response:', result);
+
+        if (result.success || result.status === 'started' || result.status === 'already_running') {
+          simulatorStatus.running = true;
+          eventCount = 0;
+          liveEvents = [];
+          updateSimulatorUI();
+          addLiveEvent('system', `Simulator started with "${scenario}" scenario`);
+        } else {
+          addLiveEvent('warning', `Could not start simulator: ${result.error || 'Unknown error'}`);
+        }
+      } catch (err) {
+        console.error('Failed to start simulator:', err);
+        addLiveEvent('alert', 'Failed to start simulator • Check server connection');
+      } finally {
+        startBtn.disabled = false;
+      }
+    }
+
+    async function stopSimulator() {
+      const stopBtn = document.getElementById('sim-stop');
+
+      // Disable button during request
+      stopBtn.disabled = true;
+
+      try {
+        console.log('Stopping simulator');
+        const response = await fetch('/api/simulator/stop', { method: 'POST' });
+
+        if (!response.ok) {
+          throw new Error(`Server returned ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('Simulator stop response:', result);
+
+        if (result.success || result.status === 'stopped' || result.status === 'not_running') {
+          simulatorStatus.running = false;
+          updateSimulatorUI();
+          addLiveEvent('system', 'Simulator stopped');
+        } else {
+          addLiveEvent('warning', `Could not stop simulator: ${result.error || 'Unknown error'}`);
+        }
+      } catch (err) {
+        console.error('Failed to stop simulator:', err);
+        // Still mark as stopped locally to sync UI
+        simulatorStatus.running = false;
+        updateSimulatorUI();
+        addLiveEvent('warning', 'Simulator stop requested • Connection issue');
+      } finally {
+        stopBtn.disabled = false;
+      }
+    }
+
+    async function setScenario(scenario) {
+      // If simulator isn't running, just update the dropdown selection
+      // The selected scenario will be used when simulator starts
+      if (!simulatorStatus.running) {
+        addLiveEvent('system', `Scenario "${scenario}" selected • Press Play to start`);
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/simulator/scenario', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scenario })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server returned ${response.status}`);
+        }
+
+        const result = await response.json();
+        if (result.success) {
+          addLiveEvent('system', `Scenario changed to "${scenario}"`);
+        } else {
+          addLiveEvent('warning', `Could not change scenario: ${result.error || 'Unknown error'}`);
+        }
+      } catch (err) {
+        console.error('Failed to set scenario:', err);
+        addLiveEvent('warning', `Scenario change failed • Will use "${scenario}" on next start`);
+      }
+    }
+
+    function updateSimulatorUI() {
+      const statusEl = document.getElementById('sim-status');
+      const statusText = document.getElementById('sim-status-text');
+      const feedTitle = document.getElementById('feed-title');
+      const tickCounter = document.getElementById('tick-counter');
+      const floorContainer = document.getElementById('floor-container');
+      const eventTicker = document.getElementById('event-ticker');
+
+      console.log('updateSimulatorUI called, running:', simulatorStatus.running);
+
+      if (simulatorStatus.running) {
+        statusEl.className = 'sim-status-indicator running';
+        statusText.textContent = 'RUNNING';
+        feedTitle.classList.remove('inactive');
+        tickCounter.style.display = 'flex';
+        floorContainer.classList.add('sim-active');
+        eventTicker.classList.add('active');
+      } else {
+        statusEl.className = 'sim-status-indicator stopped';
+        statusText.textContent = 'STOPPED';
+        feedTitle.classList.add('inactive');
+        floorContainer.classList.remove('sim-active');
+        eventTicker.classList.remove('active');
+      }
+    }
+
+    function addLiveEvent(type, message, details = null) {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      const event = { type, message, details, time: timeStr };
+      liveEvents.unshift(event);
+      liveEvents = liveEvents.slice(0, MAX_LIVE_EVENTS);
+
+      renderLiveFeed();
+
+      // Append to ticker (don't re-render, just append)
+      if (simulatorStatus.running || type === 'system') {
+        appendTickerItem(type, message.replace(/<[^>]*>/g, '')); // Strip HTML for ticker
+      }
+    }
+
+    // ==================== TICKER (Seamless Marquee) ====================
+    const tickerState = {
+      items: [],
+      maxItems: 30,
+      baseSpeed: 80, // pixels per second
+      initialized: false
+    };
+
+    function initTicker() {
+      if (tickerState.initialized) return;
+      tickerState.initialized = true;
+
+      const tickerContent = document.getElementById('ticker-content');
+      // Start with welcome message
+      appendTickerItem('system', 'Or-care-stra Ensemble ready • Start simulator to track equipment');
+      updateTickerAnimation();
+    }
+
+    function appendTickerItem(type, message) {
+      const tickerContent = document.getElementById('ticker-content');
+      if (!tickerContent) return;
+
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      // Determine icon
+      let iconClass = 'move';
+      let iconSymbol = '→';
+      if (type === 'alert') { iconClass = 'alert'; iconSymbol = '!'; }
+      else if (type === 'warning') { iconClass = 'warning'; iconSymbol = '⚡'; }
+      else if (type === 'system') { iconClass = 'system'; iconSymbol = '●'; }
+
+      // Create item element
+      const item = document.createElement('div');
+      item.className = 'ticker-item new-item';
+      item.innerHTML = `
+        <span class="ticker-icon ${iconClass}">${iconSymbol}</span>
+        <span class="ticker-time">${timeStr}</span>
+        <span class="ticker-text">${message}</span>
+      `;
+
+      // Remove new-item class after animation
+      setTimeout(() => item.classList.remove('new-item'), 500);
+
+      // Append to ticker (at the end, which visually appears as newest on the right)
+      tickerContent.appendChild(item);
+
+      // Track items
+      tickerState.items.push({ type, message, time: timeStr, element: item });
+
+      // Maintain the duplicate for seamless loop
+      maintainTickerLoop();
+
+      // Update animation speed based on content width
+      updateTickerAnimation();
+    }
+
+    function maintainTickerLoop() {
+      const tickerContent = document.getElementById('ticker-content');
+      if (!tickerContent) return;
+
+      // Get all original items (first half)
+      const allItems = tickerContent.querySelectorAll('.ticker-item');
+      const halfCount = Math.ceil(tickerState.items.length);
+
+      // Remove excess duplicates
+      while (allItems.length > halfCount * 2) {
+        allItems[allItems.length - 1].remove();
+      }
+
+      // Add duplicates if needed for seamless loop
+      const originals = Array.from(tickerContent.querySelectorAll('.ticker-item')).slice(0, halfCount);
+      const duplicates = Array.from(tickerContent.querySelectorAll('.ticker-item')).slice(halfCount);
+
+      if (duplicates.length < originals.length) {
+        originals.forEach((orig, i) => {
+          if (!duplicates[i]) {
+            const clone = orig.cloneNode(true);
+            clone.classList.remove('new-item');
+            tickerContent.appendChild(clone);
+          }
+        });
+      }
+
+      // Trim old items if over limit
+      while (tickerState.items.length > tickerState.maxItems) {
+        const oldest = tickerState.items.shift();
+        // Remove from DOM (both original and duplicate)
+        const items = tickerContent.querySelectorAll('.ticker-item');
+        if (items[0]) items[0].remove();
+        if (items[tickerState.items.length]) items[tickerState.items.length].remove();
+      }
+    }
+
+    function updateTickerAnimation() {
+      const tickerContent = document.getElementById('ticker-content');
+      if (!tickerContent) return;
+
+      // Calculate width and set appropriate duration
+      const contentWidth = tickerContent.scrollWidth / 2; // Half because we duplicate
+      const duration = Math.max(20, contentWidth / tickerState.baseSpeed);
+
+      tickerContent.style.setProperty('--ticker-duration', `${duration}s`);
+    }
+
+    function renderLiveFeed() {
+      const feedItems = document.getElementById('feed-items');
+      const eventCountEl = document.getElementById('event-count');
+
+      eventCountEl.textContent = eventCount;
+
+      if (liveEvents.length === 0) {
+        feedItems.innerHTML = '<div class="feed-empty">Start simulator to see live events</div>';
+        return;
+      }
+
+      feedItems.innerHTML = liveEvents.map(event => {
+        let itemClass = 'feed-item';
+        if (event.type === 'alert') itemClass += ' alert-item';
+        if (event.type === 'warning') itemClass += ' alert-item warning';
+
+        return `
+          <div class="${itemClass}">
+            <span class="feed-time">${event.time}</span>
+            <span class="feed-content">${event.message}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ==================== WEBSOCKET ====================
+    let wsReconnectAttempts = 0;
+    let wsConnected = false;
+    let wsReconnectTimer = null;
+    let wsPingInterval = null;
+    let wsHadPreviousConnection = false;
+
+    function connectWebSocket() {
+      // Clear any pending reconnect
+      if (wsReconnectTimer) {
+        clearTimeout(wsReconnectTimer);
+        wsReconnectTimer = null;
+      }
+
+      // Clear old ping interval
+      if (wsPingInterval) {
+        clearInterval(wsPingInterval);
+        wsPingInterval = null;
+      }
+
+      // Don't create new connection if one exists and is open/connecting
+      if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
+        return;
+      }
+
+      const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+      ws = new WebSocket(`${protocol}//${location.host}/ws`);
+
+      ws.onopen = () => {
+        console.log('WebSocket connected');
+        wsConnected = true;
+        const wasReconnect = wsReconnectAttempts > 0 || wsHadPreviousConnection;
+        wsReconnectAttempts = 0;
+
+        // Show connected message only on first connect or reconnect
+        if (!wsHadPreviousConnection) {
+          addLiveEvent('system', 'Connected to server');
+        } else if (wasReconnect) {
+          addLiveEvent('system', 'Reconnected to server');
+        }
+        wsHadPreviousConnection = true;
+
+        // Start ping interval to keep connection alive (every 25 seconds)
+        wsPingInterval = setInterval(() => {
+          if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: 'ping' }));
+          }
+        }, 25000);
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          console.log('WebSocket message:', data.type, data);
+
+          switch (data.type) {
+            case 'connected':
+              // Initial connection with server status
+              if (data.data?.simulator) {
+                simulatorStatus = data.data.simulator;
+                updateSimulatorUI();
+              }
+              break;
+
+            case 'asset_events':
+              // Array of movement events from simulator
+              if (data.data && Array.isArray(data.data)) {
+                data.data.forEach(evt => {
+                  eventCount++;
+                  addLiveEvent('movement', `<strong>${evt.assetName || 'Asset'}</strong> moved from ${evt.fromZone || '?'} → ${evt.toZone || '?'}`);
+                  highlightMovedAsset(evt.assetId);
+                });
+                // Refresh assets after movements
+                fetchAssets();
+              }
+              break;
+
+            case 'alert':
+              // New alert generated
+              if (data.data) {
+                const alert = data.data;
+                const alertType = alert.severity === 'critical' ? 'alert' : 'warning';
+                addLiveEvent(alertType, `<strong>${alert.title}</strong>`);
+                alerts.unshift(alert);
+                alerts = alerts.slice(0, 20);
+                renderAlerts();
+              }
+              break;
+
+            case 'tick':
+              // Simulator heartbeat
+              console.log('Simulator tick:', data.data);
+              break;
+
+            case 'simulator_started':
+              simulatorStatus.running = true;
+              simulatorStatus.scenario = data.data?.scenario || 'normal';
+              updateSimulatorUI();
+              break;
+
+            case 'simulator_stopped':
+              console.log('Simulator stopped via WebSocket');
+              simulatorStatus.running = false;
+              updateSimulatorUI();
+              addLiveEvent('system', 'Simulation stopped');
+              break;
+
+            case 'new_block':
+              // Blockchain block created
+              updateBlockchainUI();
+              addLiveEvent('system', `Block #${data.data?.block_number || '?'} created`);
+              break;
+
+            case 'new_transaction':
+              // Blockchain transaction recorded
+              break;
+
+            case 'pong':
+              // Server responded to our ping - connection is alive
+              break;
+
+            case 'ack':
+              // Acknowledgment of a command - ignore
+              break;
+
+            case 'status':
+              // Status update response
+              if (data.data) {
+                simulatorStatus = data.data;
+                updateSimulatorUI();
+              }
+              break;
+
+            default:
+              console.log('Unknown WebSocket message type:', data.type);
+          }
+        } catch (err) {
+          console.error('WebSocket message parse error:', err);
+        }
+      };
+
+      ws.onclose = (event) => {
+        console.log('WebSocket disconnected, code:', event.code);
+        wsConnected = false;
+
+        // Only show disconnect message and reconnect if not a clean close
+        if (event.code !== 1000) {
+          wsReconnectAttempts++;
+          // Exponential backoff: 1s, 2s, 4s, 8s, max 30s
+          const delay = Math.min(1000 * Math.pow(2, wsReconnectAttempts - 1), 30000);
+
+          // Only show message every few attempts to avoid spam
+          if (wsReconnectAttempts <= 1) {
+            addLiveEvent('system', 'Connection lost, reconnecting...');
+          }
+
+          wsReconnectTimer = setTimeout(connectWebSocket, delay);
+        }
+      };
+
+      ws.onerror = (err) => {
+        console.error('WebSocket error:', err);
+        // Don't add event here - onclose will handle it
+      };
+    }
+
+    function highlightMovedAsset(assetId) {
+      // Find all equipment markers for this asset and animate them
+      const markers = document.querySelectorAll(`.equipment-marker[data-asset-id="${assetId}"]`);
+      markers.forEach(marker => {
+        marker.classList.add('moving', 'just-moved');
+        setTimeout(() => marker.classList.remove('moving'), 500);
+        setTimeout(() => marker.classList.remove('just-moved'), 1000);
+      });
+    }
+
+    function updateAsset(updatedAsset) {
+      const index = assets.findIndex(a => a.id === updatedAsset.id);
+      if (index >= 0) {
+        assets[index] = { ...assets[index], ...updatedAsset };
+        renderAssetsList();
+        renderFloorEquipment();
+        updateVitals();
+      }
+    }
+
+    function addAlert(newAlert) {
+      alerts.unshift(newAlert);
+      alerts = alerts.slice(0, 20);
+      renderAlerts();
+    }
+
+    async function updateBlockchainUI() {
+      try {
+        const response = await fetch('/api/blockchain/status');
+        const status = await response.json();
+        document.getElementById('chain-height').textContent = status.chain_height || 0;
+        document.getElementById('chain-txs').textContent = status.transactions_24h || 0;
+      } catch (err) {
+        console.error('Failed to fetch blockchain status:', err);
+      }
+    }
+
+    // ==================== UTILITIES ====================
+    function getFilteredAssets() {
+      return assets.filter(asset => {
+        const matchesFilter = currentFilter === 'all' || asset.asset_type === currentFilter;
+        const matchesSearch = !searchQuery || asset.name.toLowerCase().includes(searchQuery) || asset.asset_tag.toLowerCase().includes(searchQuery);
+        return matchesFilter && matchesSearch;
+      });
+    }
+
+    function getAssetStatus(asset) {
+      if (asset.status === 'offline' || asset.battery_level === 0) return 'critical';
+      if (asset.battery_level < 20 || asset.status === 'maintenance') return 'attention';
+      if (asset.status === 'in_use') return 'inuse';
+      return 'healthy';
+    }
+
+    function getStatusIcon(status) {
+      switch (status) {
+        case 'healthy': return '✓';
+        case 'inuse': return '◉';
+        case 'attention': return '⚡';
+        case 'critical': return '⚠';
+        default: return '○';
+      }
+    }
+
+    function formatAssetType(type) {
+      return type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    }
+
+    function formatCurrency(amount) {
+      if (amount >= 1000000) return `R${(amount / 1000000).toFixed(1)}M`;
+      return `R${(amount / 1000).toFixed(0)}K`;
+    }
+
+    function formatTime(timestamp) {
+      if (!timestamp) return '--';
+      const date = new Date(timestamp);
+      return date.toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function getTimeAgo(timestamp) {
+      if (!timestamp) return '--';
+      const diff = Math.floor((new Date() - new Date(timestamp)) / 1000);
+      if (diff < 60) return `${diff}s ago`;
+      if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+      if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+      return `${Math.floor(diff / 86400)}d ago`;
+    }
+
+    function updateTimestamp() {
+      document.getElementById('timestamp').textContent = new Date().toLocaleString('en-ZA', {
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short'
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>

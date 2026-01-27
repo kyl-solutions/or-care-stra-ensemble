@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" class="orcarestra-ensemble-logo">
+  <defs>
+    <!-- Bar gradient colors based on brand guidelines -->
+    <linearGradient id="bar1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2dd4bf"/>
+      <stop offset="100%" style="stop-color:#25b59a"/>
+    </linearGradient>
+    <linearGradient id="bar2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#5ba8e0"/>
+      <stop offset="100%" style="stop-color:#4d91cc"/>
+    </linearGradient>
+    <linearGradient id="bar3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#9d85e8"/>
+      <stop offset="100%" style="stop-color:#8a70df"/>
+    </linearGradient>
+    <linearGradient id="bar4" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#be88e3"/>
+      <stop offset="100%" style="stop-color:#ae71d6"/>
+    </linearGradient>
+    <linearGradient id="bar5" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e878ad"/>
+      <stop offset="100%" style="stop-color:#e1629d"/>
+    </linearGradient>
+    <linearGradient id="bar6" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f08d8f"/>
+      <stop offset="100%" style="stop-color:#ed787a"/>
+    </linearGradient>
+    <linearGradient id="bar7" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f4a35e"/>
+      <stop offset="100%" style="stop-color:#f19149"/>
+    </linearGradient>
+    <linearGradient id="bar8" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f7bc72"/>
+      <stop offset="100%" style="stop-color:#f5ac5d"/>
+    </linearGradient>
+
+    <!-- Text gradient: teal to amber -->
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#25b59a"/>
+      <stop offset="100%" style="stop-color:#f5ac5d"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Animated waveform bars -->
+  <g class="waveform" transform="translate(10, 40)">
+    <!-- Bar 1 - Teal -->
+    <rect x="0" y="-6" width="6" height="12" rx="3" fill="url(#bar1)">
+      <animate attributeName="height" values="12;20;12" dur="1.2s" repeatCount="indefinite" begin="0s"/>
+      <animate attributeName="y" values="-6;-10;-6" dur="1.2s" repeatCount="indefinite" begin="0s"/>
+    </rect>
+
+    <!-- Bar 2 - Blue -->
+    <rect x="10" y="-10" width="6" height="20" rx="3" fill="url(#bar2)">
+      <animate attributeName="height" values="20;32;20" dur="1.2s" repeatCount="indefinite" begin="0.1s"/>
+      <animate attributeName="y" values="-10;-16;-10" dur="1.2s" repeatCount="indefinite" begin="0.1s"/>
+    </rect>
+
+    <!-- Bar 3 - Purple -->
+    <rect x="20" y="-14" width="6" height="28" rx="3" fill="url(#bar3)">
+      <animate attributeName="height" values="28;40;28" dur="1.2s" repeatCount="indefinite" begin="0.2s"/>
+      <animate attributeName="y" values="-14;-20;-14" dur="1.2s" repeatCount="indefinite" begin="0.2s"/>
+    </rect>
+
+    <!-- Bar 4 - Violet (tallest) -->
+    <rect x="30" y="-18" width="6" height="36" rx="3" fill="url(#bar4)">
+      <animate attributeName="height" values="36;24;36" dur="1.2s" repeatCount="indefinite" begin="0.3s"/>
+      <animate attributeName="y" values="-18;-12;-18" dur="1.2s" repeatCount="indefinite" begin="0.3s"/>
+    </rect>
+
+    <!-- Bar 5 - Pink -->
+    <rect x="40" y="-16" width="6" height="32" rx="3" fill="url(#bar5)">
+      <animate attributeName="height" values="32;20;32" dur="1.2s" repeatCount="indefinite" begin="0.4s"/>
+      <animate attributeName="y" values="-16;-10;-16" dur="1.2s" repeatCount="indefinite" begin="0.4s"/>
+    </rect>
+
+    <!-- Bar 6 - Coral -->
+    <rect x="50" y="-12" width="6" height="24" rx="3" fill="url(#bar6)">
+      <animate attributeName="height" values="24;36;24" dur="1.2s" repeatCount="indefinite" begin="0.5s"/>
+      <animate attributeName="y" values="-12;-18;-12" dur="1.2s" repeatCount="indefinite" begin="0.5s"/>
+    </rect>
+
+    <!-- Bar 7 - Orange -->
+    <rect x="60" y="-8" width="6" height="16" rx="3" fill="url(#bar7)">
+      <animate attributeName="height" values="16;28;16" dur="1.2s" repeatCount="indefinite" begin="0.6s"/>
+      <animate attributeName="y" values="-8;-14;-8" dur="1.2s" repeatCount="indefinite" begin="0.6s"/>
+    </rect>
+
+    <!-- Bar 8 - Amber -->
+    <rect x="70" y="-5" width="6" height="10" rx="3" fill="url(#bar8)">
+      <animate attributeName="height" values="10;18;10" dur="1.2s" repeatCount="indefinite" begin="0.7s"/>
+      <animate attributeName="y" values="-5;-9;-5" dur="1.2s" repeatCount="indefinite" begin="0.7s"/>
+    </rect>
+  </g>
+
+  <!-- Logo text -->
+  <text x="95" y="36" font-family="Montserrat, Inter, -apple-system, sans-serif" font-size="24" font-weight="700" letter-spacing="-0.5" fill="url(#textGrad)">or-care-stra</text>
+  <text x="95" y="56" font-family="Montserrat, Inter, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#8a70df">ensemble</text>
+</svg>

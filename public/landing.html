@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Or-care-stra Ensemble | Digital Twin Hospital Asset Tracking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --teal-500: #14b8a6;
+      --teal-600: #0d9488;
+      --teal-700: #0f766e;
+      --neon-cyan: #00fff7;
+      --neon-green: #10b981;
+      --neon-red: #ef4444;
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-500: #64748b;
+      --slate-700: #334155;
+      --slate-800: #1e293b;
+      --slate-900: #0f172a;
+
+      /* Brand Colors */
+      --brand-teal: #25b59a;
+      --brand-blue: #4d91cc;
+      --brand-purple: #8a70df;
+      --brand-violet: #ae71d6;
+      --brand-pink: #e1629d;
+      --brand-coral: #ed787a;
+      --brand-orange: #f19149;
+      --brand-amber: #f5ac5d;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #f0fdfa 0%, #e6fffa 50%, var(--slate-100) 100%);
+      min-height: 100vh;
+      color: var(--slate-800);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse at 10% 10%, rgba(20, 184, 166, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 20%, rgba(0, 255, 247, 0.12) 0%, transparent 40%),
+        radial-gradient(ellipse at 30% 80%, rgba(20, 184, 166, 0.15) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .landing-container {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .landing-header {
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--teal-500), var(--teal-600));
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(20, 184, 166, 0.4);
+    }
+
+    .brand-logo i {
+      color: white;
+      font-size: 22px;
+    }
+
+    .brand-text h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, var(--brand-teal), var(--brand-amber));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .brand-text span {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--brand-purple);
+    }
+
+    /* Animated Logo Waveform */
+    .logo-waveform {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 36px;
+    }
+
+    .logo-waveform .bar {
+      width: 5px;
+      border-radius: 3px;
+      animation: waveformPulse 1.2s ease-in-out infinite;
+    }
+
+    .logo-waveform .bar:nth-child(1) { height: 10px; background: linear-gradient(180deg, #2dd4bf, var(--brand-teal)); animation-delay: 0s; }
+    .logo-waveform .bar:nth-child(2) { height: 16px; background: linear-gradient(180deg, #5ba8e0, var(--brand-blue)); animation-delay: 0.1s; }
+    .logo-waveform .bar:nth-child(3) { height: 24px; background: linear-gradient(180deg, #9d85e8, var(--brand-purple)); animation-delay: 0.2s; }
+    .logo-waveform .bar:nth-child(4) { height: 32px; background: linear-gradient(180deg, #be88e3, var(--brand-violet)); animation-delay: 0.3s; }
+    .logo-waveform .bar:nth-child(5) { height: 28px; background: linear-gradient(180deg, #e878ad, var(--brand-pink)); animation-delay: 0.4s; }
+    .logo-waveform .bar:nth-child(6) { height: 20px; background: linear-gradient(180deg, #f08d8f, var(--brand-coral)); animation-delay: 0.5s; }
+    .logo-waveform .bar:nth-child(7) { height: 14px; background: linear-gradient(180deg, #f4a35e, var(--brand-orange)); animation-delay: 0.6s; }
+    .logo-waveform .bar:nth-child(8) { height: 9px; background: linear-gradient(180deg, #f7bc72, var(--brand-amber)); animation-delay: 0.7s; }
+
+    @keyframes waveformPulse {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(0.5); }
+    }
+
+    .logo-waveform.large {
+      height: 56px;
+      gap: 6px;
+    }
+
+    .logo-waveform.large .bar {
+      width: 8px;
+      border-radius: 4px;
+    }
+
+    .logo-waveform.large .bar:nth-child(1) { height: 16px; }
+    .logo-waveform.large .bar:nth-child(2) { height: 26px; }
+    .logo-waveform.large .bar:nth-child(3) { height: 38px; }
+    .logo-waveform.large .bar:nth-child(4) { height: 52px; }
+    .logo-waveform.large .bar:nth-child(5) { height: 44px; }
+    .logo-waveform.large .bar:nth-child(6) { height: 32px; }
+    .logo-waveform.large .bar:nth-child(7) { height: 22px; }
+    .logo-waveform.large .bar:nth-child(8) { height: 14px; }
+
+    .header-cta {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--teal-500), var(--teal-600));
+      color: white;
+      box-shadow: 0 4px 16px rgba(20, 184, 166, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(20, 184, 166, 0.45);
+    }
+
+    .btn-glass {
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--teal-700);
+      border: 1px solid rgba(20, 184, 166, 0.2);
+      backdrop-filter: blur(12px);
+    }
+
+    .btn-glass:hover {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(20, 184, 166, 0.4);
+    }
+
+    /* Hero Section */
+    .hero {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 60px 48px;
+      max-width: 1400px;
+      margin: 0 auto;
+      gap: 80px;
+    }
+
+    .hero-content {
+      flex: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(20, 184, 166, 0.1);
+      border: 1px solid rgba(20, 184, 166, 0.2);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--teal-700);
+      margin-bottom: 24px;
+    }
+
+    .hero-badge i {
+      color: var(--teal-500);
+    }
+
+    .hero-title {
+      font-size: 56px;
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--slate-900);
+      margin-bottom: 24px;
+    }
+
+    .hero-title .highlight {
+      background: linear-gradient(135deg, var(--teal-500), var(--neon-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 20px;
+      color: var(--slate-600);
+      line-height: 1.6;
+      margin-bottom: 40px;
+      max-width: 540px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .stat {
+      text-align: left;
+    }
+
+    .stat-value {
+      font-size: 36px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--teal-600);
+    }
+
+    .stat-value.danger {
+      color: var(--neon-red);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--slate-500);
+      margin-top: 4px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+    }
+
+    .btn-lg {
+      padding: 16px 32px;
+      font-size: 16px;
+    }
+
+    /* Hero Visual */
+    .hero-visual {
+      flex: 1;
+      position: relative;
+    }
+
+    .dashboard-preview {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 253, 250, 0.8) 100%);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(20, 184, 166, 0.2);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 24px 80px rgba(20, 184, 166, 0.15);
+      position: relative;
+    }
+
+    .dashboard-preview::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 247, 0.5), transparent);
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .preview-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .preview-dot.red { background: #ef4444; }
+    .preview-dot.yellow { background: #f59e0b; }
+    .preview-dot.green { background: #10b981; }
+
+    .preview-title {
+      margin-left: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate-600);
+    }
+
+    .preview-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .preview-stat {
+      background: rgba(20, 184, 166, 0.05);
+      border: 1px solid rgba(20, 184, 166, 0.1);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .preview-stat-label {
+      font-size: 11px;
+      color: var(--slate-500);
+      margin-bottom: 4px;
+    }
+
+    .preview-stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--slate-800);
+    }
+
+    .preview-map {
+      background: rgba(20, 184, 166, 0.03);
+      border: 1px solid rgba(20, 184, 166, 0.1);
+      border-radius: 12px;
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preview-map-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(20, 184, 166, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20, 184, 166, 0.1) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+
+    .asset-dot {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: var(--teal-500);
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(20, 184, 166, 0.6);
+    }
+
+    .asset-dot.pulse {
+      animation: assetPulse 2s ease-in-out infinite;
+    }
+
+    .asset-dot.alert {
+      background: var(--neon-red);
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+    }
+
+    @keyframes assetPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.7; }
+    }
+
+    /* Features Section */
+    .features {
+      padding: 80px 48px;
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .features-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(20, 184, 166, 0.15);
+      border-radius: 20px;
+      padding: 32px;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(20, 184, 166, 0.15);
+      border-color: rgba(20, 184, 166, 0.3);
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.15), rgba(20, 184, 166, 0.05));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .feature-icon i {
+      font-size: 24px;
+      color: var(--teal-600);
+    }
+
+    .feature-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--slate-800);
+      margin-bottom: 12px;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      color: var(--slate-600);
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    .landing-footer {
+      padding: 32px 48px;
+      text-align: center;
+      color: var(--slate-500);
+      font-size: 13px;
+    }
+
+    .landing-footer a {
+      color: var(--teal-600);
+      text-decoration: none;
+    }
+
+    @media (max-width: 1024px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 24px;
+      }
+
+      .hero-subtitle {
+        max-width: 100%;
+      }
+
+      .hero-stats {
+        justify-content: center;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 36px;
+      }
+
+      .hero-stats {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .stat {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="landing-container">
+    <!-- Header -->
+    <header class="landing-header">
+      <div class="brand">
+        <div class="logo-waveform">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+        <div class="brand-text">
+          <h1>or-care-stra</h1>
+          <span>ensemble</span>
+        </div>
+      </div>
+      <div class="header-cta">
+        <a href="/command-center" class="btn btn-glass">
+          <i class="fas fa-play"></i>
+          Demo
+        </a>
+        <a href="#" class="btn btn-primary" id="download-btn">
+          <i class="fas fa-download"></i>
+          Download
+        </a>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fas fa-bolt"></i>
+          Real-Time Location System
+        </div>
+        <h2 class="hero-title">
+          Never Lose<br>
+          <span class="highlight">Critical Equipment</span><br>
+          Again
+        </h2>
+        <p class="hero-subtitle">
+          Track billions worth of hospital equipment in real-time. Save clinicians critical time,
+          save the taxpayer billions, and ultimately save lives with our digital twin platform.
+        </p>
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-value danger">R585K</div>
+            <div class="stat-label">Equipment vanishes daily</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">6,000</div>
+            <div class="stat-label">Nurse hours wasted monthly</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">273</div>
+            <div class="stat-label">Patient hours saved daily</div>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <a href="/command-center" class="btn btn-primary btn-lg">
+            <i class="fas fa-desktop"></i>
+            Launch Command Center
+          </a>
+          <a href="#features" class="btn btn-glass btn-lg">
+            <i class="fas fa-info-circle"></i>
+            Learn More
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="dashboard-preview">
+          <div class="preview-header">
+            <div class="preview-dot red"></div>
+            <div class="preview-dot yellow"></div>
+            <div class="preview-dot green"></div>
+            <span class="preview-title">Asset Command Center</span>
+          </div>
+          <div class="preview-stats">
+            <div class="preview-stat">
+              <div class="preview-stat-label">Assets Tracked</div>
+              <div class="preview-stat-value">1,247</div>
+            </div>
+            <div class="preview-stat">
+              <div class="preview-stat-label">Online Now</div>
+              <div class="preview-stat-value">1,189</div>
+            </div>
+            <div class="preview-stat">
+              <div class="preview-stat-label">Active Alerts</div>
+              <div class="preview-stat-value">3</div>
+            </div>
+            <div class="preview-stat">
+              <div class="preview-stat-label">Zones Monitored</div>
+              <div class="preview-stat-value">48</div>
+            </div>
+          </div>
+          <div class="preview-map">
+            <div class="preview-map-grid"></div>
+            <div class="asset-dot pulse" style="top: 20%; left: 15%;"></div>
+            <div class="asset-dot" style="top: 35%; left: 45%;"></div>
+            <div class="asset-dot pulse" style="top: 60%; left: 25%;"></div>
+            <div class="asset-dot" style="top: 45%; left: 70%;"></div>
+            <div class="asset-dot alert pulse" style="top: 75%; left: 55%;"></div>
+            <div class="asset-dot" style="top: 25%; left: 80%;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <h3 class="feature-title">Real-Time Tracking</h3>
+          <p class="feature-desc">
+            BLE-powered asset tracking with sub-meter accuracy. Know exactly where every piece of equipment is, 24/7.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-link"></i>
+          </div>
+          <h3 class="feature-title">Blockchain Audit Trail</h3>
+          <p class="feature-desc">
+            Tamper-evident, immutable logging of every asset movement. POPIA compliant with encrypted data transmission.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <h3 class="feature-title">AI Anomaly Detection</h3>
+          <p class="feature-desc">
+            Machine learning identifies unusual patterns like equipment hoarding, potential theft, or maintenance needs.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-draw-polygon"></i>
+          </div>
+          <h3 class="feature-title">Smart Geofencing</h3>
+          <p class="feature-desc">
+            Define zones and get instant alerts when assets leave designated areas. Prevent loss before it happens.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-wifi-slash"></i>
+          </div>
+          <h3 class="feature-title">Offline Resilient</h3>
+          <p class="feature-desc">
+            24-48 hour offline operation capability. Critical tracking continues even during network or power outages.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="feature-title">Digital Twin Dashboard</h3>
+          <p class="feature-desc">
+            Live operational model with real-time visibility into asset locations, utilization, and maintenance status.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+      <p>Or-care-stra Ensemble v1.0 &copy; 2026 <a href="https://kylsolutions.co.za">KYL Solutions</a></p>
+    </footer>
+  </div>
+</body>
+</html>

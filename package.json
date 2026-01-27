@@ -1,0 +1,128 @@
+{
+  "name": "or-care-stra-ensemble",
+  "version": "1.0.0",
+  "description": "Digital Twin Hospital Equipment Tracking System - Saving Lives Through Asset Visibility",
+  "type": "module",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "db:init": "node database/init.js",
+    "db:seed": "node database/seed.js",
+    "db:reset": "rm -f database/ensemble.db && npm run db:init && npm run db:seed",
+    "electron:dev": "electron .",
+    "electron:build": "electron-builder",
+    "electron:build:mac": "electron-builder --mac",
+    "electron:build:win": "electron-builder --win",
+    "electron:build:linux": "electron-builder --linux",
+    "electron:build:all": "electron-builder -mwl",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.0",
+    "better-sqlite3": "^12.6.2",
+    "dotenv": "^17.2.3",
+    "hono": "^4.11.2",
+    "ws": "^8.19.0"
+  },
+  "devDependencies": {
+    "electron": "^40.0.0",
+    "electron-builder": "^26.4.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "build": {
+    "appId": "co.za.orcarestra.ensemble",
+    "productName": "Or-care-stra Ensemble",
+    "copyright": "Copyright 2026 KYL Solutions",
+    "asar": false,
+    "directories": {
+      "output": "dist-electron",
+      "buildResources": "electron/icons"
+    },
+    "files": [
+      "electron/**/*",
+      "server.js",
+      "public/**/*",
+      "database/**/*",
+      "!database/*.db",
+      "node_modules/**/*",
+      "!node_modules/.cache/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "database/ensemble.db",
+        "to": "database/ensemble.db"
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.medical",
+      "icon": "electron/icons/icon.icns",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "electron/entitlements.mac.plist",
+      "entitlementsInherit": "electron/entitlements.mac.plist"
+    },
+    "win": {
+      "icon": "electron/icons/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Or-care-stra Ensemble"
+    },
+    "linux": {
+      "icon": "electron/icons",
+      "category": "Medical",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    }
+  }
+}
