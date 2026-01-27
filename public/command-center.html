@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Command Center | Or-care-stra Ensemble</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -115,34 +115,32 @@
       cursor: pointer;
     }
 
-    .soundwave {
+    .logo-waveform {
       display: flex;
       align-items: center;
-      gap: 2px;
+      gap: 3px;
       height: 28px;
     }
 
-    .soundwave .bar {
-      width: 3px;
-      border-radius: 1.5px;
-      animation-play-state: running;
+    .logo-waveform .bar {
+      width: 4px;
+      border-radius: 2px;
+      animation: waveformPulse 1.2s ease-in-out infinite;
     }
 
-    .soundwave .bar:nth-child(1) { height: 6px; background: linear-gradient(180deg, #2dd4bf, #25b59a); animation: wave1 1.2s ease-in-out infinite; }
-    .soundwave .bar:nth-child(2) { height: 10px; background: linear-gradient(180deg, #5ba8e0, #4d91cc); animation: wave2 1.2s ease-in-out infinite 0.1s; }
-    .soundwave .bar:nth-child(3) { height: 18px; background: linear-gradient(180deg, #9d85e8, #8a70df); animation: wave3 1.2s ease-in-out infinite 0.2s; }
-    .soundwave .bar:nth-child(4) { height: 24px; background: linear-gradient(180deg, #be88e3, #ae71d6); animation: wave4 1.2s ease-in-out infinite 0.3s; }
-    .soundwave .bar:nth-child(5) { height: 20px; background: linear-gradient(180deg, #e878ad, #e1629d); animation: wave5 1.2s ease-in-out infinite 0.4s; }
-    .soundwave .bar:nth-child(6) { height: 14px; background: linear-gradient(180deg, #f08d8f, #ed787a); animation: wave6 1.2s ease-in-out infinite 0.5s; }
-    .soundwave .bar:nth-child(7) { height: 8px; background: linear-gradient(180deg, #f4a35e, #f19149); animation: wave7 1.2s ease-in-out infinite 0.6s; }
+    .logo-waveform .bar:nth-child(1) { height: 8px; background: linear-gradient(180deg, #2dd4bf, #25b59a); animation-delay: 0s; }
+    .logo-waveform .bar:nth-child(2) { height: 12px; background: linear-gradient(180deg, #5ba8e0, #4d91cc); animation-delay: 0.1s; }
+    .logo-waveform .bar:nth-child(3) { height: 18px; background: linear-gradient(180deg, #9d85e8, #8a70df); animation-delay: 0.2s; }
+    .logo-waveform .bar:nth-child(4) { height: 24px; background: linear-gradient(180deg, #be88e3, #ae71d6); animation-delay: 0.3s; }
+    .logo-waveform .bar:nth-child(5) { height: 21px; background: linear-gradient(180deg, #e878ad, #e1629d); animation-delay: 0.4s; }
+    .logo-waveform .bar:nth-child(6) { height: 15px; background: linear-gradient(180deg, #f08d8f, #ed787a); animation-delay: 0.5s; }
+    .logo-waveform .bar:nth-child(7) { height: 10px; background: linear-gradient(180deg, #f4a35e, #f19149); animation-delay: 0.6s; }
+    .logo-waveform .bar:nth-child(8) { height: 7px; background: linear-gradient(180deg, #f7bc72, #f5ac5d); animation-delay: 0.7s; }
 
-    @keyframes wave1 { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(2.2); } }
-    @keyframes wave2 { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.8); } }
-    @keyframes wave3 { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.5); } }
-    @keyframes wave4 { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.3); } }
-    @keyframes wave5 { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.5); } }
-    @keyframes wave6 { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.8); } }
-    @keyframes wave7 { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(2.0); } }
+    @keyframes waveformPulse {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(0.5); }
+    }
 
     .brand-text {
       display: flex;
@@ -151,18 +149,22 @@
     }
 
     .brand-name {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--text-primary);
-      letter-spacing: 1px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #25b59a, #f5ac5d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .brand-sub {
+      font-family: 'Montserrat', sans-serif;
       font-size: 10px;
-      color: var(--accent-teal);
-      letter-spacing: 3px;
-      text-transform: uppercase;
+      font-weight: 500;
+      color: #8a70df;
+      letter-spacing: 0.5px;
     }
 
     .top-bar-center {
@@ -1728,12 +1730,12 @@
       </a>
       <div class="nav-divider"></div>
       <a href="/" class="brand">
-        <div class="soundwave">
-          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="logo-waveform">
+          <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
         </div>
         <div class="brand-text">
-          <span class="brand-name">OR-CARE-STRA</span>
-          <span class="brand-sub">ENSEMBLE</span>
+          <span class="brand-name">or-care-stra</span>
+          <span class="brand-sub">ensemble</span>
         </div>
       </a>
     </div>
