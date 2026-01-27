@@ -22,6 +22,9 @@
       --slate-700: #334155;
       --slate-800: #1e293b;
       --slate-900: #0f172a;
+      --gold-400: #fbbf24;
+      --gold-500: #f59e0b;
+      --gold-600: #d97706;
 
       /* Brand Colors */
       --brand-teal: #25b59a;
@@ -147,25 +150,6 @@
       50% { transform: scaleY(0.5); }
     }
 
-    .logo-waveform.large {
-      height: 56px;
-      gap: 6px;
-    }
-
-    .logo-waveform.large .bar {
-      width: 8px;
-      border-radius: 4px;
-    }
-
-    .logo-waveform.large .bar:nth-child(1) { height: 16px; }
-    .logo-waveform.large .bar:nth-child(2) { height: 26px; }
-    .logo-waveform.large .bar:nth-child(3) { height: 38px; }
-    .logo-waveform.large .bar:nth-child(4) { height: 52px; }
-    .logo-waveform.large .bar:nth-child(5) { height: 44px; }
-    .logo-waveform.large .bar:nth-child(6) { height: 32px; }
-    .logo-waveform.large .bar:nth-child(7) { height: 22px; }
-    .logo-waveform.large .bar:nth-child(8) { height: 14px; }
-
     .header-cta {
       display: flex;
       gap: 12px;
@@ -208,19 +192,30 @@
       border-color: rgba(20, 184, 166, 0.4);
     }
 
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
+      color: white;
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(245, 158, 11, 0.45);
+    }
+
     /* Hero Section */
     .hero {
-      flex: 1;
       display: flex;
       align-items: center;
-      padding: 60px 48px;
+      padding: 40px 48px 60px;
       max-width: 1400px;
       margin: 0 auto;
-      gap: 80px;
+      gap: 60px;
     }
 
     .hero-content {
       flex: 1;
+      min-width: 400px;
     }
 
     .hero-badge {
@@ -242,11 +237,11 @@
     }
 
     .hero-title {
-      font-size: 56px;
+      font-size: 48px;
       font-weight: 800;
       line-height: 1.1;
       color: var(--slate-900);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .hero-title .highlight {
@@ -257,17 +252,17 @@
     }
 
     .hero-subtitle {
-      font-size: 20px;
+      font-size: 18px;
       color: var(--slate-600);
       line-height: 1.6;
-      margin-bottom: 40px;
-      max-width: 540px;
+      margin-bottom: 32px;
+      max-width: 500px;
     }
 
     .hero-stats {
       display: flex;
-      gap: 40px;
-      margin-bottom: 40px;
+      gap: 32px;
+      margin-bottom: 32px;
     }
 
     .stat {
@@ -275,7 +270,7 @@
     }
 
     .stat-value {
-      font-size: 36px;
+      font-size: 32px;
       font-weight: 800;
       font-family: 'JetBrains Mono', monospace;
       color: var(--teal-600);
@@ -286,7 +281,7 @@
     }
 
     .stat-label {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--slate-500);
       margin-top: 4px;
     }
@@ -301,23 +296,24 @@
       font-size: 16px;
     }
 
-    /* Hero Visual */
+    /* Hero Visual - Live Dashboard */
     .hero-visual {
-      flex: 1;
+      flex: 1.2;
       position: relative;
     }
 
-    .dashboard-preview {
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 253, 250, 0.8) 100%);
-      backdrop-filter: blur(24px);
-      border: 1px solid rgba(20, 184, 166, 0.2);
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 24px 80px rgba(20, 184, 166, 0.15);
-      position: relative;
+    .dashboard-frame {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%);
+      border: 1px solid rgba(20, 184, 166, 0.3);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.3),
+        0 0 60px rgba(20, 184, 166, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
-    .dashboard-preview::before {
+    .dashboard-frame::before {
       content: '';
       position: absolute;
       top: 0;
@@ -327,102 +323,294 @@
       background: linear-gradient(90deg, transparent, rgba(0, 255, 247, 0.5), transparent);
     }
 
-    .preview-header {
+    .frame-header {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 20px;
+      padding: 12px 16px;
+      background: rgba(0, 0, 0, 0.3);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .preview-dot {
+    .frame-dot {
       width: 12px;
       height: 12px;
       border-radius: 50%;
     }
 
-    .preview-dot.red { background: #ef4444; }
-    .preview-dot.yellow { background: #f59e0b; }
-    .preview-dot.green { background: #10b981; }
+    .frame-dot.red { background: #ef4444; }
+    .frame-dot.yellow { background: #f59e0b; }
+    .frame-dot.green { background: #10b981; }
 
-    .preview-title {
+    .frame-title {
       margin-left: 12px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
-      color: var(--slate-600);
-    }
-
-    .preview-stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .preview-stat {
-      background: rgba(20, 184, 166, 0.05);
-      border: 1px solid rgba(20, 184, 166, 0.1);
-      border-radius: 12px;
-      padding: 16px;
-    }
-
-    .preview-stat-label {
-      font-size: 11px;
-      color: var(--slate-500);
-      margin-bottom: 4px;
-    }
-
-    .preview-stat-value {
-      font-size: 24px;
-      font-weight: 700;
+      color: rgba(255, 255, 255, 0.7);
       font-family: 'JetBrains Mono', monospace;
-      color: var(--slate-800);
     }
 
-    .preview-map {
-      background: rgba(20, 184, 166, 0.03);
-      border: 1px solid rgba(20, 184, 166, 0.1);
-      border-radius: 12px;
-      height: 180px;
+    .frame-live {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--neon-green);
+      font-weight: 600;
+    }
+
+    .frame-live::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--neon-green);
+      border-radius: 50%;
+      animation: livePulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .dashboard-iframe {
+      width: 100%;
+      height: 420px;
+      border: none;
+      display: block;
+    }
+
+    /* ========== ENSEMBLE REWARDS SECTION ========== */
+    .ensemble-rewards {
+      padding: 80px 48px;
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fff7ed 100%);
       position: relative;
       overflow: hidden;
     }
 
-    .preview-map-grid {
+    .ensemble-rewards::before {
+      content: '';
       position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(20, 184, 166, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(20, 184, 166, 0.1) 1px, transparent 1px);
-      background-size: 30px 30px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse at 20% 30%, rgba(245, 158, 11, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(217, 119, 6, 0.1) 0%, transparent 40%);
+      pointer-events: none;
     }
 
-    .asset-dot {
+    .rewards-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .rewards-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .rewards-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.1));
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gold-600);
+      margin-bottom: 20px;
+    }
+
+    .rewards-badge i {
+      color: var(--gold-500);
+      font-size: 16px;
+    }
+
+    .rewards-title {
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--slate-900);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .rewards-title .gold {
+      background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .rewards-subtitle {
+      font-size: 18px;
+      color: var(--slate-600);
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .rewards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .reward-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: 20px;
+      padding: 32px;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reward-card::before {
+      content: '';
       position: absolute;
-      width: 12px;
-      height: 12px;
-      background: var(--teal-500);
-      border-radius: 50%;
-      box-shadow: 0 0 12px rgba(20, 184, 166, 0.6);
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold-400), var(--gold-600));
     }
 
-    .asset-dot.pulse {
-      animation: assetPulse 2s ease-in-out infinite;
+    .reward-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(245, 158, 11, 0.2);
+      border-color: rgba(245, 158, 11, 0.4);
     }
 
-    .asset-dot.alert {
-      background: var(--neon-red);
-      box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+    .reward-icon {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.05));
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
     }
 
-    @keyframes assetPulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.3); opacity: 0.7; }
+    .reward-icon i {
+      font-size: 32px;
+      color: var(--gold-600);
+    }
+
+    .reward-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--slate-800);
+      margin-bottom: 12px;
+    }
+
+    .reward-desc {
+      font-size: 14px;
+      color: var(--slate-600);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .reward-highlight {
+      display: inline-block;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.05));
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold-600);
+    }
+
+    /* Big Impact Statement */
+    .impact-statement {
+      background: linear-gradient(135deg, var(--slate-900), var(--slate-800));
+      border-radius: 24px;
+      padding: 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .impact-statement::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-500), transparent);
+    }
+
+    .impact-quote {
+      font-size: 28px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 24px;
+      line-height: 1.4;
+    }
+
+    .impact-quote .highlight {
+      color: var(--gold-400);
+    }
+
+    .impact-metrics {
+      display: flex;
+      justify-content: center;
+      gap: 64px;
+      flex-wrap: wrap;
+    }
+
+    .impact-metric {
+      text-align: center;
+    }
+
+    .impact-value {
+      font-size: 48px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      background: linear-gradient(135deg, var(--gold-400), var(--gold-500));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .impact-label {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 8px;
     }
 
     /* Features Section */
     .features {
       padding: 80px 48px;
       background: rgba(255, 255, 255, 0.5);
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .features-header h2 {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--slate-900);
+      margin-bottom: 12px;
+    }
+
+    .features-header p {
+      font-size: 16px;
+      color: var(--slate-600);
     }
 
     .features-grid {
@@ -497,6 +685,10 @@
         padding: 40px 24px;
       }
 
+      .hero-content {
+        min-width: auto;
+      }
+
       .hero-subtitle {
         max-width: 100%;
       }
@@ -509,23 +701,44 @@
         justify-content: center;
       }
 
-      .features-grid {
+      .features-grid,
+      .rewards-grid {
         grid-template-columns: 1fr;
+      }
+
+      .impact-metrics {
+        gap: 32px;
       }
     }
 
     @media (max-width: 768px) {
       .hero-title {
-        font-size: 36px;
+        font-size: 32px;
+      }
+
+      .rewards-title {
+        font-size: 28px;
       }
 
       .hero-stats {
         flex-direction: column;
-        gap: 20px;
+        gap: 16px;
       }
 
       .stat {
         text-align: center;
+      }
+
+      .dashboard-iframe {
+        height: 300px;
+      }
+
+      .impact-quote {
+        font-size: 20px;
+      }
+
+      .impact-value {
+        font-size: 36px;
       }
     }
   </style>
@@ -551,13 +764,13 @@
         </div>
       </div>
       <div class="header-cta">
-        <a href="/command-center" class="btn btn-glass">
+        <a href="/dashboard" class="btn btn-glass">
           <i class="fas fa-play"></i>
           Demo
         </a>
-        <a href="#" class="btn btn-primary" id="download-btn">
-          <i class="fas fa-download"></i>
-          Download
+        <a href="#rewards" class="btn btn-gold">
+          <i class="fas fa-coins"></i>
+          Join the Ensemble
         </a>
       </div>
     </header>
@@ -576,7 +789,7 @@
         </h2>
         <p class="hero-subtitle">
           Track billions worth of hospital equipment in real-time. Save clinicians critical time,
-          save the taxpayer billions, and ultimately save lives with our digital twin platform.
+          save the taxpayer billions, and share in the rewards.
         </p>
         <div class="hero-stats">
           <div class="stat">
@@ -593,51 +806,107 @@
           </div>
         </div>
         <div class="hero-actions">
-          <a href="/command-center" class="btn btn-primary btn-lg">
+          <a href="/dashboard" class="btn btn-primary btn-lg">
             <i class="fas fa-desktop"></i>
             Launch Command Center
           </a>
-          <a href="#features" class="btn btn-glass btn-lg">
-            <i class="fas fa-info-circle"></i>
-            Learn More
+          <a href="#rewards" class="btn btn-glass btn-lg">
+            <i class="fas fa-hand-holding-dollar"></i>
+            See Rewards
           </a>
         </div>
       </div>
 
       <div class="hero-visual">
-        <div class="dashboard-preview">
-          <div class="preview-header">
-            <div class="preview-dot red"></div>
-            <div class="preview-dot yellow"></div>
-            <div class="preview-dot green"></div>
-            <span class="preview-title">Asset Command Center</span>
+        <div class="dashboard-frame">
+          <div class="frame-header">
+            <div class="frame-dot red"></div>
+            <div class="frame-dot yellow"></div>
+            <div class="frame-dot green"></div>
+            <span class="frame-title">command-center.exe</span>
+            <span class="frame-live">LIVE</span>
           </div>
-          <div class="preview-stats">
-            <div class="preview-stat">
-              <div class="preview-stat-label">Assets Tracked</div>
-              <div class="preview-stat-value">1,247</div>
-            </div>
-            <div class="preview-stat">
-              <div class="preview-stat-label">Online Now</div>
-              <div class="preview-stat-value">1,189</div>
-            </div>
-            <div class="preview-stat">
-              <div class="preview-stat-label">Active Alerts</div>
-              <div class="preview-stat-value">3</div>
-            </div>
-            <div class="preview-stat">
-              <div class="preview-stat-label">Zones Monitored</div>
-              <div class="preview-stat-value">48</div>
-            </div>
+          <iframe src="/dashboard" class="dashboard-iframe" title="Live Command Center"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ENSEMBLE REWARDS SECTION ========== -->
+    <section class="ensemble-rewards" id="rewards">
+      <div class="rewards-container">
+        <div class="rewards-header">
+          <div class="rewards-badge">
+            <i class="fas fa-trophy"></i>
+            Ensemble Rewards Program
           </div>
-          <div class="preview-map">
-            <div class="preview-map-grid"></div>
-            <div class="asset-dot pulse" style="top: 20%; left: 15%;"></div>
-            <div class="asset-dot" style="top: 35%; left: 45%;"></div>
-            <div class="asset-dot pulse" style="top: 60%; left: 25%;"></div>
-            <div class="asset-dot" style="top: 45%; left: 70%;"></div>
-            <div class="asset-dot alert pulse" style="top: 75%; left: 55%;"></div>
-            <div class="asset-dot" style="top: 25%; left: 80%;"></div>
+          <h2 class="rewards-title">
+            Not Just Equipment.<br>
+            <span class="gold">An Ensemble of Dedicated People.</span>
+          </h2>
+          <p class="rewards-subtitle">
+            Every nurse, porter, security guard and supplier who helps prevent loss shares in the savings.
+            We're building South Africa's first profit-sharing healthcare platform — because everyone who fights
+            equipment theft deserves a stake in the billions we save.
+          </p>
+        </div>
+
+        <div class="rewards-grid">
+          <div class="reward-card">
+            <div class="reward-icon">
+              <i class="fas fa-user-nurse"></i>
+            </div>
+            <h3 class="reward-title">Staff Rewards</h3>
+            <p class="reward-desc">
+              Report misuse, flag suspicious activity, or help recover equipment.
+              Every verified report earns points that convert to real payouts from the savings pool.
+            </p>
+            <span class="reward-highlight">Earn R50-R500 per verified report</span>
+          </div>
+
+          <div class="reward-card">
+            <div class="reward-icon">
+              <i class="fas fa-handshake"></i>
+            </div>
+            <h3 class="reward-title">Supplier Partnership</h3>
+            <p class="reward-desc">
+              Equipment suppliers earn revenue through verified savings, not replacement sales.
+              Aligned incentives eliminate fraud pressure and create sustainable partnerships.
+            </p>
+            <span class="reward-highlight">10-20% of verified annual savings</span>
+          </div>
+
+          <div class="reward-card">
+            <div class="reward-icon">
+              <i class="fas fa-piggy-bank"></i>
+            </div>
+            <h3 class="reward-title">Savings Pool</h3>
+            <p class="reward-desc">
+              All prevented losses flow into a transparent pool. Staff bonuses, supplier shares,
+              and hospital reinvestment — all tracked on immutable blockchain audit trail.
+            </p>
+            <span class="reward-highlight">R60-109M potential annual pool</span>
+          </div>
+        </div>
+
+        <div class="impact-statement">
+          <p class="impact-quote">
+            "When <span class="highlight">everyone shares in the savings</span>, everyone has a reason to care.
+            That's not just asset tracking — that's building an <span class="highlight">ensemble of dedicated people</span>
+            who protect our hospitals."
+          </p>
+          <div class="impact-metrics">
+            <div class="impact-metric">
+              <div class="impact-value">R109M</div>
+              <div class="impact-label">Potential Annual Savings</div>
+            </div>
+            <div class="impact-metric">
+              <div class="impact-value">R76</div>
+              <div class="impact-label">Daily Cost Per Life Changed</div>
+            </div>
+            <div class="impact-metric">
+              <div class="impact-value">3,600×</div>
+              <div class="impact-label">Return on Human Impact</div>
+            </div>
           </div>
         </div>
       </div>
@@ -645,6 +914,10 @@
 
     <!-- Features Section -->
     <section class="features" id="features">
+      <div class="features-header">
+        <h2>Built for South African Realities</h2>
+        <p>Offline-first, load-shedding resilient, and designed for real hospital conditions.</p>
+      </div>
       <div class="features-grid">
         <div class="feature-card">
           <div class="feature-icon">
@@ -688,7 +961,7 @@
           </div>
           <h3 class="feature-title">Offline Resilient</h3>
           <p class="feature-desc">
-            24-48 hour offline operation capability. Critical tracking continues even during network or power outages.
+            24-48 hour offline operation capability. Critical tracking continues even during load-shedding or network outages.
           </p>
         </div>
         <div class="feature-card">
@@ -705,7 +978,7 @@
 
     <!-- Footer -->
     <footer class="landing-footer">
-      <p>Or-care-stra Ensemble v1.0 &copy; 2026 <a href="https://kylsolutions.co.za">KYL Solutions</a></p>
+      <p>Or-care-stra Ensemble v1.0 &copy; 2026 <a href="https://kylsolutions.co.za">KYL Solutions</a> | <a href="mailto:projects@kylsolutions.co.za">projects@kylsolutions.co.za</a></p>
     </footer>
   </div>
 </body>
