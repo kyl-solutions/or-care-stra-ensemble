@@ -10,6 +10,8 @@ import { fork } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import net from 'net';
+import https from 'https';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -63,7 +65,6 @@ console.log('[Ensemble] Paths:', { IS_PACKAGED, APP_ROOT, SERVER_SCRIPT });
  */
 async function isPortAvailable(port) {
   return new Promise((resolve) => {
-    const net = require('net');
     const server = net.createServer();
     server.once('error', () => resolve(false));
     server.once('listening', () => {
@@ -77,19 +78,14 @@ async function isPortAvailable(port) {
 /**
  * Check if the cloud server is available
  */
-async function checkCloudServer() {
-  try {
-    const https = await import('https');
-    return new Promise((resolve) => {
-      const req = https.get(`${CLOUD_SERVER_URL}/api/health`, { timeout: 5000 }, (res) => {
-        resolve(res.statusCode === 200);
-      });
-      req.on('error', () => resolve(false));
-      req.on('timeout', () => { req.destroy(); resolve(false); });
+function checkCloudServer() {
+  return new Promise((resolve) => {
+    const req = https.get(`${CLOUD_SERVER_URL}/api/health`, { timeout: 5000 }, (res) => {
+      resolve(res.statusCode === 200);
     });
-  } catch {
-    return false;
-  }
+    req.on('error', () => resolve(false));
+    req.on('timeout', () => { req.destroy(); resolve(false); });
+  });
 }
 
 /**
