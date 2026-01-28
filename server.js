@@ -834,26 +834,34 @@ app.get('/api/gateways', (c) => {
 app.use('/assets/*', serveStatic({ root: './public' }));
 app.use('/static/*', serveStatic({ root: './public' }));
 
-// Serve desktop app downloads
-app.get('/downloads/:filename', (c) => {
-  const { filename } = c.req.param();
-  const filePath = join(__dirname, 'public', 'downloads', filename);
+// Serve desktop app downloads from dist-electron/ directory
+app.get('/downloads/:filename', async (c) => {
+  const fs = await import('fs/promises');
+  const filename = c.req.param('filename');
+
+  // Map friendly names to actual versioned files in dist-electron/
+  const fileMap = {
+    'Or-care-stra Ensemble-macos.dmg': 'Or-care-stra Ensemble-1.0.0.dmg',
+    'Or-care-stra Ensemble-macos-intel.dmg': 'Or-care-stra Ensemble-1.0.0.dmg',
+    'Or-care-stra Ensemble-macos.zip': 'Or-care-stra Ensemble-1.0.0-mac.zip',
+    'Or-care-stra Ensemble-windows.exe': 'Or-care-stra Ensemble Setup 1.0.0.exe',
+    'Or-care-stra Ensemble-windows-portable.exe': 'Or-care-stra Ensemble 1.0.0.exe'
+  };
+
+  const actualFile = fileMap[filename] || filename;
+  const filePath = join(__dirname, 'dist-electron', actualFile);
 
   if (!existsSync(filePath)) {
-    return c.json({ error: 'File not found' }, 404);
+    return c.json({ error: 'File not found', requested: filename, resolved: actualFile }, 404);
   }
 
-  const fileBuffer = readFileSync(filePath);
-  const contentType = filename.endsWith('.dmg') ? 'application/x-apple-diskimage'
-    : filename.endsWith('.exe') ? 'application/x-msdownload'
-    : 'application/octet-stream';
+  const stat = await fs.stat(filePath);
+  const content = await fs.readFile(filePath);
 
-  return new Response(fileBuffer, {
-    headers: {
-      'Content-Type': contentType,
-      'Content-Disposition': `attachment; filename="${filename}"`,
-      'Content-Length': fileBuffer.length.toString()
-    }
+  return c.body(content, 200, {
+    'Content-Type': 'application/octet-stream',
+    'Content-Disposition': `attachment; filename="${actualFile}"`,
+    'Content-Length': stat.size.toString()
   });
 });
 

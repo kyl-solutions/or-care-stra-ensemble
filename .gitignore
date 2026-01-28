@@ -29,6 +29,7 @@ Thumbs.db
 
 # Build artifacts
 dist/
+dist-electron/
 build/
 
 # Temporary files
