@@ -6,7 +6,7 @@
  */
 
 import { app, BrowserWindow, Menu, Tray, shell, dialog, nativeImage, ipcMain } from 'electron';
-import { spawn } from 'child_process';
+import { fork } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
@@ -30,7 +30,12 @@ const WINDOW_SIZES = {
 
 // Server configuration
 const SERVER_PORT = 3457;
-const SERVER_URL = `http://localhost:${SERVER_PORT}`;
+const LOCAL_SERVER_URL = `http://localhost:${SERVER_PORT}`;
+const CLOUD_SERVER_URL = 'https://ensemble.kyl.solutions';
+
+// Will be set based on whether local server starts successfully
+let SERVER_URL = LOCAL_SERVER_URL;
+let useCloudFallback = false;
 
 // Detect if we're running in a packaged app or development
 const IS_PACKAGED = app.isPackaged;
@@ -54,53 +59,100 @@ if (IS_PACKAGED) {
 console.log('[Ensemble] Paths:', { IS_PACKAGED, APP_ROOT, SERVER_SCRIPT });
 
 /**
- * Start the embedded Node.js server
+ * Check if a port is available
  */
-function startServer() {
+async function isPortAvailable(port) {
+  return new Promise((resolve) => {
+    const net = require('net');
+    const server = net.createServer();
+    server.once('error', () => resolve(false));
+    server.once('listening', () => {
+      server.close();
+      resolve(true);
+    });
+    server.listen(port, '127.0.0.1');
+  });
+}
+
+/**
+ * Check if the cloud server is available
+ */
+async function checkCloudServer() {
+  try {
+    const https = await import('https');
+    return new Promise((resolve) => {
+      const req = https.get(`${CLOUD_SERVER_URL}/api/health`, { timeout: 5000 }, (res) => {
+        resolve(res.statusCode === 200);
+      });
+      req.on('error', () => resolve(false));
+      req.on('timeout', () => { req.destroy(); resolve(false); });
+    });
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Start the embedded Node.js server
+ * Uses fork() to run server.js using Electron's bundled Node.js runtime
+ * Falls back to cloud server if local server fails (e.g., native module issues on Windows)
+ */
+async function startServer() {
+  console.log('[Ensemble] Starting embedded server...');
+
+  // First, check if port is available
+  const portAvailable = await isPortAvailable(SERVER_PORT);
+  if (!portAvailable) {
+    console.log('[Ensemble] Port', SERVER_PORT, 'is already in use');
+    // Try cloud fallback immediately
+    const cloudAvailable = await checkCloudServer();
+    if (cloudAvailable) {
+      console.log('[Ensemble] Port in use, using cloud fallback');
+      SERVER_URL = CLOUD_SERVER_URL;
+      useCloudFallback = true;
+      return;
+    } else {
+      throw new Error(`Port ${SERVER_PORT} is already in use and cloud server is not available`);
+    }
+  }
+
   return new Promise((resolve, reject) => {
-    console.log('[Ensemble] Starting embedded server...');
+    console.log('[Ensemble] Port available, starting local server...');
+
+    // Determine database path for packaged app
+    let dbPath;
+    if (IS_PACKAGED) {
+      dbPath = path.join(process.resourcesPath, 'database', 'ensemble.db');
+    } else {
+      dbPath = path.join(APP_ROOT, 'database', 'ensemble.db');
+    }
+    console.log('[Ensemble] Database path:', dbPath);
 
     const env = {
       ...process.env,
       PORT: SERVER_PORT.toString(),
       NODE_ENV: 'production',
-      ELECTRON_APP: 'true'
+      ELECTRON_APP: 'true',
+      DB_PATH: dbPath,
+      // Ensure native modules are loaded correctly
+      ELECTRON_RUN_AS_NODE: '1'
     };
 
-    // Find node executable
-    const nodePaths = [
-      '/usr/local/bin/node',
-      '/opt/homebrew/bin/node',
-      '/usr/bin/node',
-      'C:\\Program Files\\nodejs\\node.exe',
-      'C:\\Program Files (x86)\\nodejs\\node.exe'
-    ];
+    console.log('[Ensemble] Starting server with fork:', SERVER_SCRIPT);
+    console.log('[Ensemble] Using Electron execPath:', process.execPath);
 
-    let nodePath = null;
-    for (const np of nodePaths) {
-      if (fs.existsSync(np)) {
-        nodePath = np;
-        console.log('[Ensemble] Found node at:', np);
-        break;
-      }
-    }
-
-    // Fallback to PATH
-    if (!nodePath) {
-      nodePath = process.platform === 'win32' ? 'node.exe' : 'node';
-      console.log('[Ensemble] Using node from PATH');
-    }
-
-    console.log('[Ensemble] Starting server with:', nodePath, SERVER_SCRIPT);
-
-    serverProcess = spawn(nodePath, [SERVER_SCRIPT], {
+    // Use fork() which uses Electron's bundled Node.js runtime
+    // This ensures native modules compiled for Electron work correctly
+    serverProcess = fork(SERVER_SCRIPT, [], {
       cwd: APP_ROOT,
       env,
-      stdio: ['pipe', 'pipe', 'pipe'],
-      shell: false
+      stdio: ['pipe', 'pipe', 'pipe', 'ipc'],
+      execPath: process.execPath,
+      execArgv: [] // Clear any debug flags
     });
 
     let started = false;
+    let serverFailed = false;
 
     serverProcess.stdout.on('data', (data) => {
       const output = data.toString();
@@ -108,34 +160,135 @@ function startServer() {
 
       if (!started && (output.includes('listening') || output.includes('Server running') || output.includes('localhost'))) {
         started = true;
+        SERVER_URL = LOCAL_SERVER_URL;
+        useCloudFallback = false;
+        console.log('[Ensemble] Local server started successfully');
         resolve();
       }
     });
 
     serverProcess.stderr.on('data', (data) => {
-      console.error('[Server Error]', data.toString().trim());
+      const errorMsg = data.toString().trim();
+      console.error('[Server Error]', errorMsg);
+
+      // Check for errors that indicate we need cloud fallback
+      if (errorMsg.includes('NODE_MODULE_VERSION') ||
+          errorMsg.includes('was compiled against') ||
+          errorMsg.includes('ERR_DLOPEN_FAILED') ||
+          errorMsg.includes('not a valid Win32 application') ||
+          errorMsg.includes('module was not found') ||
+          errorMsg.includes('EADDRINUSE') ||
+          errorMsg.includes('address already in use')) {
+        console.log('[Ensemble] Server error detected, will try cloud fallback:', errorMsg.substring(0, 100));
+        serverFailed = true;
+
+        // If port is in use, fall back to cloud immediately
+        if (errorMsg.includes('EADDRINUSE') || errorMsg.includes('address already in use')) {
+          console.log('[Ensemble] Port already in use, switching to cloud mode');
+          if (serverProcess) {
+            serverProcess.kill('SIGTERM');
+          }
+          checkCloudServer().then((cloudAvailable) => {
+            if (cloudAvailable && !started) {
+              SERVER_URL = CLOUD_SERVER_URL;
+              useCloudFallback = true;
+              started = true;
+              resolve();
+            }
+          });
+        }
+      }
     });
 
     serverProcess.on('error', (err) => {
       console.error('[Server] Failed to start:', err);
-      reject(err);
+      serverFailed = true;
     });
 
     serverProcess.on('exit', (code) => {
       console.log(`[Server] Exited with code ${code}`);
-      if (!isQuitting) {
-        dialog.showErrorBox('Server Error', 'The Ensemble server has stopped unexpectedly. The application will now close.');
-        app.quit();
+
+      // If already using cloud fallback, don't show error
+      if (useCloudFallback) {
+        console.log('[Ensemble] Server exited but already using cloud fallback');
+        return;
+      }
+
+      if (!started && !isQuitting) {
+        // Server exited before starting - try cloud fallback
+        console.log('[Ensemble] Local server failed to start, attempting cloud fallback...');
+        serverFailed = true;
+
+        checkCloudServer().then((cloudAvailable) => {
+          if (cloudAvailable) {
+            console.log('[Ensemble] Cloud server available, using cloud fallback');
+            SERVER_URL = CLOUD_SERVER_URL;
+            useCloudFallback = true;
+            resolve();
+          } else {
+            console.error('[Ensemble] Cloud server not available');
+            dialog.showErrorBox(
+              'Server Error',
+              'Could not start local server and cloud server is not available.\n\n' +
+              'Please check your internet connection and try again.\n\n' +
+              'For best results, ensure https://ensemble.kyl.solutions is accessible.'
+            );
+            app.quit();
+          }
+        });
+      } else if (!isQuitting && started && !serverFailed) {
+        // Server was running but crashed unexpectedly - try cloud fallback
+        console.log('[Ensemble] Server crashed, attempting cloud fallback...');
+        checkCloudServer().then((cloudAvailable) => {
+          if (cloudAvailable) {
+            console.log('[Ensemble] Switching to cloud mode after crash');
+            SERVER_URL = CLOUD_SERVER_URL;
+            useCloudFallback = true;
+            // Reload the window with cloud URL
+            if (mainWindow && !mainWindow.isDestroyed()) {
+              mainWindow.loadURL(SERVER_URL);
+              dialog.showMessageBox(mainWindow, {
+                type: 'info',
+                title: 'Switched to Cloud Mode',
+                message: 'Local server stopped',
+                detail: 'The app has automatically switched to cloud mode for uninterrupted operation.',
+                buttons: ['OK']
+              });
+            }
+          } else {
+            dialog.showErrorBox('Server Error', 'The Ensemble server has stopped unexpectedly and cloud backup is not available.\n\nPlease check your internet connection and try again.');
+            app.quit();
+          }
+        });
       }
     });
 
-    // Timeout fallback
+    // Timeout fallback - check cloud if local doesn't start in time
     setTimeout(() => {
-      if (!started) {
-        started = true;
-        resolve();
+      if (!started && !serverFailed) {
+        console.log('[Ensemble] Local server timeout, checking cloud fallback...');
+        checkCloudServer().then((cloudAvailable) => {
+          if (cloudAvailable && !started) {
+            console.log('[Ensemble] Using cloud fallback due to timeout');
+            SERVER_URL = CLOUD_SERVER_URL;
+            useCloudFallback = true;
+            // Kill the stuck local server
+            if (serverProcess) {
+              serverProcess.kill('SIGTERM');
+            }
+            resolve();
+          } else if (!started) {
+            // Give it a bit more time
+            setTimeout(() => {
+              if (!started) {
+                started = true;
+                resolve();
+              }
+            }, 4000);
+          }
+        });
       }
-    }, 4000);
+    }, 8000);
   });
 }
 
@@ -457,15 +610,33 @@ app.whenReady().then(async () => {
   console.log('[Ensemble] Starting desktop application...');
 
   try {
-    // Start the embedded server first
+    // Start the embedded server first (or fall back to cloud)
     await startServer();
-    console.log('[Ensemble] Server started successfully');
+
+    if (useCloudFallback) {
+      console.log('[Ensemble] Using cloud server at:', SERVER_URL);
+    } else {
+      console.log('[Ensemble] Local server started successfully at:', SERVER_URL);
+    }
 
     // Create the main window
     createWindow();
 
     // Create system tray
     createTray();
+
+    // If using cloud fallback, show a notification
+    if (useCloudFallback && mainWindow) {
+      mainWindow.webContents.once('did-finish-load', () => {
+        dialog.showMessageBox(mainWindow, {
+          type: 'info',
+          title: 'Cloud Mode',
+          message: 'Running in Cloud Mode',
+          detail: 'The desktop app is connected to the cloud server at ensemble.kyl.solutions.\n\nThis provides full functionality with real-time data.',
+          buttons: ['OK']
+        });
+      });
+    }
 
     // macOS: Re-create window when dock icon is clicked
     app.on('activate', () => {
