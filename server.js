@@ -39,11 +39,15 @@ let db = null;
 async function initDatabase() {
   try {
     const Database = (await import('better-sqlite3')).default;
-    const dbPath = process.env.DB_PATH || './database/ensemble.db';
+
+    // Database path: prefer DB_PATH env var, fallback to local directory
+    const dbPath = process.env.DB_PATH || join(__dirname, 'database', 'ensemble.db');
+    console.log('Using database path:', dbPath);
 
     // Check if database exists
     if (!existsSync(dbPath)) {
-      console.log('Database not found. Run: npm run db:init && npm run db:seed');
+      console.log('Database not found at:', dbPath);
+      console.log('Run: npm run db:init && npm run db:seed');
       return null;
     }
 
@@ -78,7 +82,10 @@ function broadcastToClients(message) {
 async function initSimulator() {
   try {
     const { IoTSimulator } = await import('./simulator/iot-simulator.js');
-    simulator = new IoTSimulator();
+
+    // Database path: prefer DB_PATH env var, fallback to local directory
+    const dbPath = process.env.DB_PATH || join(__dirname, 'database', 'ensemble.db');
+    simulator = new IoTSimulator(dbPath);
 
     // Forward simulator events to WebSocket clients
     simulator.on('events', (events) => {
@@ -133,7 +140,10 @@ async function initSimulator() {
 async function initBlockchain() {
   try {
     const { AuditChain } = await import('./blockchain/audit-chain.js');
-    const dbPath = process.env.DB_PATH || './database/ensemble.db';
+
+    // Database path: prefer DB_PATH env var, fallback to local directory
+    const dbPath = process.env.DB_PATH || join(__dirname, 'database', 'ensemble.db');
+
     auditChain = new AuditChain(dbPath);
 
     // Start block timer for automatic block creation
@@ -861,7 +871,10 @@ app.get('/downloads/:filename', async (c) => {
   return c.body(content, 200, {
     'Content-Type': 'application/octet-stream',
     'Content-Disposition': `attachment; filename="${actualFile}"`,
-    'Content-Length': stat.size.toString()
+    'Content-Length': stat.size.toString(),
+    'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+    'Pragma': 'no-cache',
+    'Expires': '0'
   });
 });
 
@@ -965,8 +978,13 @@ app.get('/favicon.svg', (c) => {
 const PORT = parseInt(process.env.PORT || '3457');
 
 async function startServer() {
-  // Initialize database
-  await initDatabase();
+  // Initialize database - MUST succeed for server to work
+  const dbResult = await initDatabase();
+  if (!dbResult) {
+    console.error('FATAL: Database initialization failed. Server cannot start.');
+    console.error('This usually means the native SQLite module is not compatible.');
+    process.exit(1);
+  }
 
   // Initialize blockchain audit trail
   await initBlockchain();
