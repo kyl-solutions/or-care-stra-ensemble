@@ -982,8 +982,15 @@ async function startServer() {
       headers: req.headers
     })).then(async (response) => {
       res.writeHead(response.status, Object.fromEntries(response.headers.entries()));
-      const body = await response.text();
-      res.end(body);
+      // Use arrayBuffer for binary responses (like DMG downloads), text for HTML/JSON
+      const contentType = response.headers.get('content-type') || '';
+      if (contentType.includes('octet-stream') || contentType.includes('application/x-')) {
+        const buffer = await response.arrayBuffer();
+        res.end(Buffer.from(buffer));
+      } else {
+        const body = await response.text();
+        res.end(body);
+      }
     }).catch((error) => {
       console.error('Request error:', error);
       res.writeHead(500);
