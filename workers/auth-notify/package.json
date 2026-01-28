@@ -1,0 +1,13 @@
+{
+  "name": "ensemble-auth-notify",
+  "version": "1.0.0",
+  "description": "Or-care-stra Ensemble auth notification worker using ntfy.sh",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

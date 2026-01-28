@@ -206,16 +206,18 @@
     /* Hero Section */
     .hero {
       display: flex;
-      align-items: center;
+      align-items: stretch;
       padding: 40px 48px 60px;
       max-width: 1400px;
       margin: 0 auto;
-      gap: 60px;
+      gap: 48px;
     }
 
     .hero-content {
       flex: 1;
-      min-width: 400px;
+      min-width: 420px;
+      display: flex;
+      flex-direction: column;
     }
 
     .hero-badge {
@@ -296,10 +298,13 @@
       font-size: 16px;
     }
 
-    /* Hero Visual - Live Dashboard */
+    /* Hero Visual - Feature Window aligned with hero content height */
     .hero-visual {
-      flex: 1.2;
+      flex: 1;
       position: relative;
+      max-width: 640px;
+      display: flex;
+      flex-direction: column;
     }
 
     .dashboard-frame {
@@ -311,6 +316,10 @@
         0 24px 80px rgba(0, 0, 0, 0.3),
         0 0 60px rgba(20, 184, 166, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
 
     .dashboard-frame::before {
@@ -321,6 +330,7 @@
       right: 0;
       height: 1px;
       background: linear-gradient(90deg, transparent, rgba(0, 255, 247, 0.5), transparent);
+      z-index: 2;
     }
 
     .frame-header {
@@ -374,11 +384,160 @@
       50% { opacity: 0.4; }
     }
 
-    .dashboard-iframe {
+    /* Feature Window - fills dashboard frame height */
+    .feature-window {
+      position: relative;
       width: 100%;
-      height: 420px;
-      border: none;
-      display: block;
+      flex: 1;
+      overflow: hidden;
+      min-height: 280px;
+    }
+
+    .feature-slides {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .feature-slide {
+      min-width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 32px;
+      text-align: center;
+      background: linear-gradient(145deg, rgba(15, 23, 42, 1) 0%, rgba(30, 41, 59, 1) 100%);
+    }
+
+    .feature-slide-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      animation: iconFloat 3s ease-in-out infinite;
+    }
+
+    .feature-slide-icon i {
+      font-size: 28px;
+      color: white;
+    }
+
+    .feature-slide-icon.teal { background: linear-gradient(135deg, var(--teal-500), var(--teal-600)); box-shadow: 0 8px 32px rgba(20, 184, 166, 0.4); }
+    .feature-slide-icon.cyan { background: linear-gradient(135deg, #06b6d4, #0891b2); box-shadow: 0 8px 32px rgba(6, 182, 212, 0.4); }
+    .feature-slide-icon.purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4); }
+    .feature-slide-icon.gold { background: linear-gradient(135deg, var(--gold-500), var(--gold-600)); box-shadow: 0 8px 32px rgba(245, 158, 11, 0.4); }
+    .feature-slide-icon.emerald { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 8px 32px rgba(16, 185, 129, 0.4); }
+
+    @keyframes iconFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .feature-slide-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    .feature-slide-desc {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.65);
+      line-height: 1.5;
+      max-width: 340px;
+    }
+
+    /* Try Demo text prompt - GOLD to match button glow */
+    .demo-prompt {
+      margin-top: 16px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold-400);
+      text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      cursor: default;
+    }
+
+    .demo-prompt.visible {
+      opacity: 1;
+      animation: demoPulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes demoPulse {
+      0%, 100% { opacity: 1; text-shadow: 0 0 20px rgba(245, 158, 11, 0.5); }
+      50% { opacity: 0.8; text-shadow: 0 0 30px rgba(245, 158, 11, 0.8); }
+    }
+
+    /* Hero button glow when demo prompt visible - GOLD for contrast */
+    .btn-primary.glow,
+    .btn-glass.glow {
+      animation: buttonGlow 1.2s ease-in-out infinite;
+      border-color: var(--gold-500) !important;
+    }
+
+    @keyframes buttonGlow {
+      0%, 100% {
+        box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4), 0 0 0 2px rgba(245, 158, 11, 0.2);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 6px 40px rgba(245, 158, 11, 0.7), 0 0 60px rgba(245, 158, 11, 0.4), 0 0 0 4px rgba(245, 158, 11, 0.3);
+        transform: scale(1.02);
+      }
+    }
+
+    /* Progress indicators */
+    .slide-indicators {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .slide-indicator {
+      width: 28px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slide-indicator.active {
+      background: rgba(20, 184, 166, 0.3);
+    }
+
+    .slide-indicator.active::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: var(--teal-500);
+      animation: slideProgress 4s linear forwards;
+    }
+
+    @keyframes slideProgress {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    .slide-indicator:hover {
+      background: rgba(255, 255, 255, 0.3);
     }
 
     /* ========== ENSEMBLE REWARDS SECTION ========== */
@@ -665,6 +824,215 @@
       line-height: 1.6;
     }
 
+    /* ========== DESKTOP DOWNLOAD SECTION ========== */
+    .desktop-download {
+      padding: 80px 48px;
+      background: linear-gradient(135deg, var(--slate-900) 0%, var(--slate-800) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .desktop-download::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(20, 184, 166, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(0, 255, 247, 0.08) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .desktop-download::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--teal-500), transparent);
+    }
+
+    .download-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .download-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: rgba(20, 184, 166, 0.15);
+      border: 1px solid rgba(20, 184, 166, 0.3);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--teal-400);
+      margin-bottom: 24px;
+    }
+
+    .download-badge i {
+      font-size: 16px;
+    }
+
+    .download-title {
+      font-size: 36px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .download-title .highlight {
+      background: linear-gradient(135deg, var(--teal-400), var(--neon-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .download-subtitle {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.7);
+      max-width: 600px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .download-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 32px 24px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .download-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal-500), var(--neon-cyan));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .download-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(20, 184, 166, 0.4);
+      box-shadow: 0 16px 48px rgba(20, 184, 166, 0.15);
+    }
+
+    .download-card:hover::before {
+      opacity: 1;
+    }
+
+    .download-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .download-icon i {
+      font-size: 48px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .download-icon.mac i { color: #a3a3a3; }
+    .download-icon.windows i { color: #00a4ef; }
+    .download-icon.linux i { color: #f7c648; }
+
+    .download-platform {
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    .download-arch {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 16px;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--teal-500), var(--teal-600));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      width: 100%;
+    }
+
+    .download-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 24px rgba(20, 184, 166, 0.4);
+    }
+
+    .download-btn.coming-soon {
+      background: rgba(255, 255, 255, 0.1);
+      cursor: not-allowed;
+    }
+
+    .download-btn.coming-soon:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .download-note {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 24px;
+    }
+
+    .download-note a {
+      color: var(--teal-400);
+      text-decoration: none;
+    }
+
+    .download-note a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .download-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .download-title {
+        font-size: 28px;
+      }
+    }
+
     /* Footer */
     .landing-footer {
       padding: 32px 48px;
@@ -683,10 +1051,26 @@
         flex-direction: column;
         text-align: center;
         padding: 40px 24px;
+        align-items: center;
       }
 
       .hero-content {
         min-width: auto;
+      }
+
+      .hero-visual {
+        max-width: 100%;
+        width: 100%;
+      }
+
+      .dashboard-frame {
+        flex: none;
+      }
+
+      .feature-window {
+        flex: none;
+        min-height: 320px;
+        aspect-ratio: 16 / 9;
       }
 
       .hero-subtitle {
@@ -729,8 +1113,26 @@
         text-align: center;
       }
 
-      .dashboard-iframe {
-        height: 300px;
+      .feature-slide-title {
+        font-size: 18px;
+      }
+
+      .feature-slide-desc {
+        font-size: 13px;
+      }
+
+      .feature-slide-icon {
+        width: 64px;
+        height: 64px;
+      }
+
+      .feature-slide-icon i {
+        font-size: 28px;
+      }
+
+      .feature-cta .btn {
+        padding: 8px 16px;
+        font-size: 12px;
       }
 
       .impact-quote {
@@ -767,6 +1169,10 @@
         <a href="/dashboard" class="btn btn-glass">
           <i class="fas fa-play"></i>
           Demo
+        </a>
+        <a href="#download" class="btn btn-glass">
+          <i class="fas fa-download"></i>
+          Download
         </a>
         <a href="#rewards" class="btn btn-gold">
           <i class="fas fa-coins"></i>
@@ -823,10 +1229,89 @@
             <div class="frame-dot red"></div>
             <div class="frame-dot yellow"></div>
             <div class="frame-dot green"></div>
-            <span class="frame-title">command-center.exe</span>
+            <span class="frame-title">ensemble-features.preview</span>
             <span class="frame-live">LIVE</span>
           </div>
-          <iframe src="/dashboard" class="dashboard-iframe" title="Live Command Center"></iframe>
+          <div class="feature-window">
+            <div class="feature-slides" id="featureSlides">
+              <!-- Slide 1: Real-Time Tracking -->
+              <div class="feature-slide">
+                <div class="feature-slide-icon teal">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3 class="feature-slide-title">Real-Time Asset Tracking</h3>
+                <p class="feature-slide-desc">
+                  Know exactly where every piece of equipment is. Sub-meter accuracy with BLE-powered tracking across every ward.
+                </p>
+                <div class="demo-prompt" id="demoPrompt">
+                  <i class="fas fa-arrow-left"></i> Try the demo
+                </div>
+              </div>
+
+              <!-- Slide 2: Blockchain Audit -->
+              <div class="feature-slide">
+                <div class="feature-slide-icon purple">
+                  <i class="fas fa-link"></i>
+                </div>
+                <h3 class="feature-slide-title">Blockchain Audit Trail</h3>
+                <p class="feature-slide-desc">
+                  Every movement logged immutably. Tamper-proof records for compliance and transparent savings tracking.
+                </p>
+                <div class="demo-prompt">
+                  <i class="fas fa-arrow-left"></i> Try the demo
+                </div>
+              </div>
+
+              <!-- Slide 3: AI Anomaly Detection -->
+              <div class="feature-slide">
+                <div class="feature-slide-icon cyan">
+                  <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="feature-slide-title">AI Anomaly Detection</h3>
+                <p class="feature-slide-desc">
+                  Machine learning spots suspicious patterns before theft happens. Hoarding and unusual movements flagged instantly.
+                </p>
+                <div class="demo-prompt">
+                  <i class="fas fa-arrow-left"></i> Try the demo
+                </div>
+              </div>
+
+              <!-- Slide 4: Smart Geofencing -->
+              <div class="feature-slide">
+                <div class="feature-slide-icon emerald">
+                  <i class="fas fa-draw-polygon"></i>
+                </div>
+                <h3 class="feature-slide-title">Smart Geofencing</h3>
+                <p class="feature-slide-desc">
+                  Define zone boundaries and get instant alerts. Equipment leaving ICU? Security notified in seconds.
+                </p>
+                <div class="demo-prompt">
+                  <i class="fas fa-arrow-left"></i> Try the demo
+                </div>
+              </div>
+
+              <!-- Slide 5: Savings & Rewards -->
+              <div class="feature-slide">
+                <div class="feature-slide-icon gold">
+                  <i class="fas fa-coins"></i>
+                </div>
+                <h3 class="feature-slide-title">Ensemble Rewards</h3>
+                <p class="feature-slide-desc">
+                  Everyone who helps prevent loss shares in the savings. Aligned incentives that make everyone care.
+                </p>
+                <div class="demo-prompt">
+                  <i class="fas fa-arrow-left"></i> Try the demo
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="slide-indicators">
+            <div class="slide-indicator active" data-slide="0"></div>
+            <div class="slide-indicator" data-slide="1"></div>
+            <div class="slide-indicator" data-slide="2"></div>
+            <div class="slide-indicator" data-slide="3"></div>
+            <div class="slide-indicator" data-slide="4"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -976,10 +1461,151 @@
       </div>
     </section>
 
+    <!-- ========== DESKTOP DOWNLOAD SECTION ========== -->
+    <section class="desktop-download" id="download">
+      <div class="download-container">
+        <div class="download-badge">
+          <i class="fas fa-download"></i>
+          Desktop Application
+        </div>
+        <h2 class="download-title">
+          Run Ensemble <span class="highlight">Anywhere</span>
+        </h2>
+        <p class="download-subtitle">
+          Download the desktop app for offline access, movable windows, and system tray integration.
+          Works without internet connection for 24-48 hours.
+        </p>
+
+        <div class="download-grid">
+          <!-- macOS -->
+          <div class="download-card">
+            <div class="download-icon mac">
+              <i class="fab fa-apple"></i>
+            </div>
+            <div class="download-platform">macOS</div>
+            <div class="download-arch">Intel & Apple Silicon (M1/M2/M3)</div>
+            <a href="#" class="download-btn coming-soon" onclick="alert('Desktop builds coming soon! Run npm run electron:build:mac locally.'); return false;">
+              <i class="fas fa-download"></i>
+              Coming Soon
+            </a>
+          </div>
+
+          <!-- Windows -->
+          <div class="download-card">
+            <div class="download-icon windows">
+              <i class="fab fa-windows"></i>
+            </div>
+            <div class="download-platform">Windows</div>
+            <div class="download-arch">Windows 10/11 (64-bit)</div>
+            <a href="#" class="download-btn coming-soon" onclick="alert('Desktop builds coming soon! Run npm run electron:build:win locally.'); return false;">
+              <i class="fas fa-download"></i>
+              Coming Soon
+            </a>
+          </div>
+
+          <!-- Linux -->
+          <div class="download-card">
+            <div class="download-icon linux">
+              <i class="fab fa-linux"></i>
+            </div>
+            <div class="download-platform">Linux</div>
+            <div class="download-arch">Ubuntu, Debian, AppImage</div>
+            <a href="#" class="download-btn coming-soon" onclick="alert('Desktop builds coming soon! Run npm run electron:build:linux locally.'); return false;">
+              <i class="fas fa-download"></i>
+              Coming Soon
+            </a>
+          </div>
+        </div>
+
+        <p class="download-note">
+          For developers: Clone the repo and run <code style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px;">npm run electron:build</code>
+          to build for your platform. <a href="https://github.com/kylsolutions/or-care-stra-ensemble">View on GitHub</a>
+        </p>
+      </div>
+    </section>
+
     <!-- Footer -->
     <footer class="landing-footer">
       <p>Or-care-stra Ensemble v1.0 &copy; 2026 <a href="https://kylsolutions.co.za">KYL Solutions</a> | <a href="mailto:projects@kylsolutions.co.za">projects@kylsolutions.co.za</a></p>
     </footer>
   </div>
+
+  <script>
+    // Feature Slideshow with Demo Prompt
+    (function() {
+      const slides = document.getElementById('featureSlides');
+      const indicators = document.querySelectorAll('.slide-indicator');
+      const demoPrompts = document.querySelectorAll('.demo-prompt');
+      const heroBtn = document.querySelector('.hero-actions .btn-primary');
+      const headerDemoBtn = document.querySelector('.header-cta .btn-glass');
+      const totalSlides = 5;
+      let currentSlide = 0;
+      let autoplayInterval;
+      let demoPromptTimeout;
+
+      function goToSlide(index) {
+        currentSlide = index;
+        slides.style.transform = `translateX(-${index * 100}%)`;
+
+        // Update indicators
+        indicators.forEach((ind, i) => {
+          ind.classList.remove('active');
+          if (i === index) {
+            ind.classList.add('active');
+          }
+        });
+
+        // Reset demo prompt visibility
+        hideDemoPrompt();
+
+        // Show demo prompt after 2 seconds on each slide
+        demoPromptTimeout = setTimeout(showDemoPrompt, 2000);
+      }
+
+      function showDemoPrompt() {
+        demoPrompts[currentSlide].classList.add('visible');
+        heroBtn.classList.add('glow');
+        if (headerDemoBtn) headerDemoBtn.classList.add('glow');
+      }
+
+      function hideDemoPrompt() {
+        demoPrompts.forEach(p => p.classList.remove('visible'));
+        heroBtn.classList.remove('glow');
+        if (headerDemoBtn) headerDemoBtn.classList.remove('glow');
+        clearTimeout(demoPromptTimeout);
+      }
+
+      function nextSlide() {
+        const next = (currentSlide + 1) % totalSlides;
+        goToSlide(next);
+      }
+
+      function startAutoplay() {
+        autoplayInterval = setInterval(nextSlide, 4000);
+      }
+
+      function stopAutoplay() {
+        clearInterval(autoplayInterval);
+      }
+
+      // Click handlers for indicators
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+          stopAutoplay();
+          goToSlide(index);
+          startAutoplay();
+        });
+      });
+
+      // Start autoplay and show first demo prompt
+      startAutoplay();
+      demoPromptTimeout = setTimeout(showDemoPrompt, 2000);
+
+      // Pause on hover
+      const frame = document.querySelector('.dashboard-frame');
+      frame.addEventListener('mouseenter', stopAutoplay);
+      frame.addEventListener('mouseleave', startAutoplay);
+    })();
+  </script>
 </body>
 </html>

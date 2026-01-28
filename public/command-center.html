@@ -263,6 +263,241 @@
       50% { opacity: 0.5; transform: scale(1.2); }
     }
 
+    /* Schematic Navigation Buttons */
+    .schematic-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .schematic-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(168, 139, 250, 0.1);
+      border: 1px solid rgba(168, 139, 250, 0.3);
+      border-radius: 8px;
+      color: var(--accent-purple);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .schematic-btn:hover {
+      background: rgba(168, 139, 250, 0.2);
+      border-color: var(--accent-purple);
+      transform: translateY(-1px);
+    }
+
+    .schematic-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* ==================== AUTH GATE ==================== */
+    .auth-gate {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--bg-void);
+      z-index: 99999;  /* Highest z-index to ensure visibility */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .auth-gate.hidden {
+      display: none !important;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .auth-card {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .auth-logo .logo-waveform {
+      height: 36px;
+    }
+
+    .auth-logo .logo-waveform .bar {
+      width: 5px;
+      border-radius: 3px;
+    }
+
+    .auth-logo .logo-waveform .bar:nth-child(1) { height: 10px; }
+    .auth-logo .logo-waveform .bar:nth-child(2) { height: 15px; }
+    .auth-logo .logo-waveform .bar:nth-child(3) { height: 22px; }
+    .auth-logo .logo-waveform .bar:nth-child(4) { height: 30px; }
+    .auth-logo .logo-waveform .bar:nth-child(5) { height: 26px; }
+    .auth-logo .logo-waveform .bar:nth-child(6) { height: 19px; }
+    .auth-logo .logo-waveform .bar:nth-child(7) { height: 12px; }
+    .auth-logo .logo-waveform .bar:nth-child(8) { height: 9px; }
+
+    .auth-logo .brand-name {
+      font-size: 24px;
+    }
+
+    .auth-logo .brand-sub {
+      font-size: 12px;
+    }
+
+    .auth-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .auth-input-group {
+      margin-bottom: 20px;
+    }
+
+    .auth-input {
+      width: 100%;
+      padding: 14px 18px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      color: var(--text-primary);
+      text-align: center;
+      letter-spacing: 2px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .auth-input::placeholder {
+      color: var(--text-muted);
+      letter-spacing: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .auth-input:focus {
+      border-color: var(--accent-teal);
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+    }
+
+    .auth-input.error {
+      border-color: var(--accent-rose);
+      animation: shake 0.4s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+
+    .auth-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--accent-teal), var(--accent-emerald));
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--bg-void);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(20, 184, 166, 0.3);
+    }
+
+    .auth-footer {
+      margin-top: 24px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Welcome Banner */
+    .welcome-banner {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.15), rgba(168, 139, 250, 0.1));
+      border-bottom: 1px solid var(--accent-teal);
+      padding: 12px 24px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      animation: slideDown 0.4s ease-out;
+    }
+
+    .welcome-banner.hidden {
+      display: none;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .welcome-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .welcome-name {
+      color: var(--accent-teal);
+      font-weight: 600;
+    }
+
+    .welcome-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+
+    .welcome-close:hover {
+      color: var(--text-primary);
+    }
+
+    .welcome-close svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Adjust main container when banner is visible */
+    .main-container.with-banner {
+      padding-top: 100px;
+    }
+
     /* ==================== MAIN LAYOUT ==================== */
     .main-container {
       display: flex;
@@ -452,19 +687,44 @@
 
     .asset-item {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
       padding: 10px 12px;
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s;
+      border-left: 3px solid transparent;
     }
 
-    .asset-item:hover { background: var(--bg-card); }
+    .asset-item:hover { background: var(--bg-card); transform: translateX(2px); }
     .asset-item.highlighted {
       background: rgba(20, 184, 166, 0.1);
-      border: 1px solid var(--accent-teal);
+      border-left-color: var(--accent-teal);
     }
+
+    .asset-item.status-healthy { border-left-color: var(--status-healthy); }
+    .asset-item.status-inuse { border-left-color: var(--status-inuse); }
+    .asset-item.status-attention { border-left-color: var(--status-attention); }
+    .asset-item.status-critical { border-left-color: var(--status-critical); }
+
+    .asset-icon-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+      background: rgba(20, 184, 166, 0.12);
+      color: var(--accent-teal);
+    }
+
+    .asset-icon-box.monitor { background: rgba(59, 130, 246, 0.12); color: var(--accent-blue); }
+    .asset-icon-box.ventilator { background: rgba(16, 185, 129, 0.12); color: var(--accent-emerald); }
+    .asset-icon-box.pump { background: rgba(167, 139, 250, 0.12); color: var(--accent-purple); }
+    .asset-icon-box.defibrillator { background: rgba(244, 63, 94, 0.12); color: var(--accent-rose); }
+    .asset-icon-box.other { background: rgba(245, 158, 11, 0.12); color: var(--accent-amber); }
 
     .asset-status-icon {
       width: 20px;
@@ -481,6 +741,33 @@
     .asset-status-icon.critical { color: var(--status-critical); }
 
     .asset-info { flex: 1; min-width: 0; }
+
+    .asset-category {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .asset-brand {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .asset-model {
+      font-size: 10px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+
     .asset-name {
       font-size: 13px;
       font-weight: 500;
@@ -490,11 +777,25 @@
       text-overflow: ellipsis;
     }
 
-    .asset-meta { font-size: 11px; color: var(--text-muted); }
-    .asset-meta span { margin-right: 8px; }
+    .asset-meta { font-size: 11px; color: var(--text-muted); display: flex; gap: 8px; align-items: center; }
     .asset-meta .location { color: var(--accent-teal); }
     .asset-meta .battery { color: var(--text-secondary); }
     .asset-meta .battery.low { color: var(--accent-amber); }
+
+    .asset-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--status-healthy);
+    }
+    .asset-status-badge.inuse { background: rgba(59, 130, 246, 0.1); color: var(--status-inuse); }
+    .asset-status-badge.attention { background: rgba(245, 158, 11, 0.1); color: var(--status-attention); }
+    .asset-status-badge.critical { background: rgba(239, 68, 68, 0.1); color: var(--status-critical); }
+    .asset-status-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
 
     /* ==================== CENTER - ISOMETRIC FLOOR ==================== */
     .center-panel {
@@ -1579,6 +1880,219 @@
       font-size: 14px;
     }
 
+    /* ==================== BLOCK DETAILS MODAL ==================== */
+    .block-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 20000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+
+    .block-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .block-modal {
+      background: linear-gradient(145deg, var(--panel-bg), var(--bg-elevated));
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 560px;
+      max-height: 80vh;
+      overflow: hidden;
+      transform: scale(0.95) translateY(20px);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 40px rgba(20, 184, 166, 0.1);
+    }
+
+    .block-modal-overlay.active .block-modal {
+      transform: scale(1) translateY(0);
+    }
+
+    .block-modal-header {
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.15), rgba(16, 185, 129, 0.08));
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .block-modal-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .block-modal-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(20, 184, 166, 0.2);
+      border: 1px solid rgba(20, 184, 166, 0.4);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .block-modal-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent-teal);
+    }
+
+    .block-modal-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .block-modal-close {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .block-modal-close:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+
+    .block-modal-body {
+      padding: 20px 24px;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    .block-detail-section {
+      margin-bottom: 20px;
+    }
+
+    .block-detail-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .block-detail-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .block-detail-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-primary);
+      background: var(--bg-card);
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--glass-border);
+      word-break: break-all;
+      line-height: 1.5;
+    }
+
+    .block-detail-value.hash {
+      color: var(--accent-cyan);
+    }
+
+    .block-detail-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .block-tx-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .block-tx-item {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      transition: border-color 0.2s;
+    }
+
+    .block-tx-item:hover {
+      border-color: var(--accent-teal);
+    }
+
+    .block-tx-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .block-tx-type {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent-teal);
+      text-transform: uppercase;
+    }
+
+    .block-tx-time {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .block-tx-hash {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-secondary);
+      opacity: 0.7;
+    }
+
+    .block-tx-empty {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .block-verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--accent-emerald);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .block-verified-badge svg {
+      width: 14px;
+      height: 14px;
+    }
+
     .savings-display {
       text-align: center;
       padding: 16px;
@@ -1619,70 +2133,145 @@
     .tooltip {
       position: fixed;
       z-index: 10000;
-      background: var(--panel-bg);
+      background: linear-gradient(145deg, var(--panel-bg), var(--bg-elevated));
       border: 1px solid var(--glass-border);
-      border-radius: 10px;
-      padding: 14px;
-      min-width: 220px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      padding: 0;
+      min-width: 280px;
+      max-width: 320px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(20, 184, 166, 0.1);
       pointer-events: none;
       opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.15s, transform 0.15s;
+      transform: translateY(8px) scale(0.96);
+      transition: opacity 0.2s, transform 0.2s;
+      overflow: hidden;
     }
 
     .tooltip.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
+    }
+
+    .tooltip-accent {
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-teal), var(--accent-cyan), var(--accent-purple));
+    }
+
+    .tooltip-content {
+      padding: 14px 16px;
     }
 
     .tooltip-header {
       display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--glass-border);
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
     }
+
+    .tooltip-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+      background: rgba(20, 184, 166, 0.15);
+      color: var(--accent-teal);
+    }
+    .tooltip-icon.monitor { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
+    .tooltip-icon.ventilator { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); }
+    .tooltip-icon.pump { background: rgba(167, 139, 250, 0.15); color: var(--accent-purple); }
+    .tooltip-icon.defibrillator { background: rgba(244, 63, 94, 0.15); color: var(--accent-rose); }
+
+    .tooltip-header-info { flex: 1; min-width: 0; }
+    .tooltip-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent-cyan); margin-bottom: 2px; }
+    .tooltip-name { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+    .tooltip-brand { font-size: 10px; color: var(--text-secondary); }
 
     .tooltip-status {
       width: 10px;
       height: 10px;
       border-radius: 50%;
+      margin-left: auto;
+      animation: tooltipPulse 2s infinite;
+    }
+    @keyframes tooltipPulse {
+      0%, 100% { box-shadow: 0 0 0 0 currentColor; }
+      50% { box-shadow: 0 0 0 4px currentColor; opacity: 0.6; }
     }
 
-    .tooltip-status.healthy { background: var(--status-healthy); }
-    .tooltip-status.inuse { background: var(--status-inuse); }
-    .tooltip-status.attention { background: var(--status-attention); }
-    .tooltip-status.critical { background: var(--status-critical); }
+    .tooltip-status.healthy { background: var(--status-healthy); color: var(--status-healthy); }
+    .tooltip-status.inuse { background: var(--status-inuse); color: var(--status-inuse); }
+    .tooltip-status.attention { background: var(--status-attention); color: var(--status-attention); }
+    .tooltip-status.critical { background: var(--status-critical); color: var(--status-critical); }
 
-    .tooltip-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
+    .tooltip-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
     }
+
+    .tooltip-stat-box {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .tooltip-stat-icon { font-size: 11px; color: var(--text-muted); margin-bottom: 3px; }
+    .tooltip-stat-value { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--text-primary); }
+    .tooltip-stat-value.good { color: var(--status-healthy); }
+    .tooltip-stat-value.warning { color: var(--accent-amber); }
+    .tooltip-stat-value.critical { color: var(--status-critical); }
+    .tooltip-stat-label { font-size: 8px; text-transform: uppercase; color: var(--text-muted); }
 
     .tooltip-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 4px 0;
+      padding: 5px 0;
+      border-top: 1px solid rgba(20, 184, 166, 0.1);
     }
+    .tooltip-row:first-of-type { border-top: none; }
 
     .tooltip-label {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
     .tooltip-value {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 11px;
+      font-weight: 500;
       color: var(--text-primary);
     }
 
     .tooltip-value.healthy { color: var(--status-healthy); }
     .tooltip-value.warning { color: var(--accent-amber); }
     .tooltip-value.critical { color: var(--status-critical); }
+
+    .tooltip-battery-bar {
+      width: 60px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-right: 8px;
+    }
+    .tooltip-battery-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.3s;
+    }
+    .tooltip-battery-fill.good { background: linear-gradient(90deg, var(--status-healthy), var(--accent-teal)); }
+    .tooltip-battery-fill.warning { background: linear-gradient(90deg, var(--accent-amber), #fbbf24); }
+    .tooltip-battery-fill.critical { background: linear-gradient(90deg, var(--status-critical), #f87171); }
 
     .loading-overlay {
       position: absolute;
@@ -1720,6 +2309,39 @@
   </style>
 </head>
 <body>
+  <!-- AUTH GATE -->
+  <div id="authGate" class="auth-gate">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="logo-waveform">
+          <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">or-care-stra</span>
+          <span class="brand-sub">ensemble</span>
+        </div>
+      </div>
+      <div class="auth-title">Partner Access Portal</div>
+      <div class="auth-input-group">
+        <input type="password" id="authPassword" class="auth-input" placeholder="Enter partner code" autocomplete="off">
+      </div>
+      <button id="authBtn" class="auth-btn">Access Command Center</button>
+      <div class="auth-footer">
+        Contact KYL Solutions for partner credentials
+      </div>
+    </div>
+  </div>
+
+  <!-- WELCOME BANNER -->
+  <div id="welcomeBanner" class="welcome-banner hidden">
+    <span class="welcome-text">Welcome back, <span id="welcomeName" class="welcome-name"></span></span>
+    <button id="closeWelcome" class="welcome-close" title="Dismiss">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
   <!-- TOP BAR -->
   <header class="top-bar">
     <div class="top-bar-left">
@@ -1772,6 +2394,20 @@
     </div>
 
     <div class="top-bar-right">
+      <div class="schematic-btns">
+        <a href="/schematics/architecture" class="schematic-btn" title="System Architecture">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
+          </svg>
+          Architecture
+        </a>
+        <a href="/schematics/certificate" class="schematic-btn" title="Asset Identity Certificate">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>
+          </svg>
+          Certificates
+        </a>
+      </div>
       <div class="ward-tabs">
         <button class="ward-tab active" data-ward="icu">ICU</button>
         <button class="ward-tab" data-ward="or">OR</button>
@@ -2223,35 +2859,269 @@
     </aside>
   </div>
 
-  <!-- TOOLTIP -->
+  <!-- TOOLTIP - Enhanced Visual Design -->
   <div class="tooltip" id="tooltip">
-    <div class="tooltip-header">
-      <span class="tooltip-status" id="tooltip-status"></span>
-      <span class="tooltip-name" id="tooltip-name">Equipment Name</span>
+    <div class="tooltip-accent"></div>
+    <div class="tooltip-content">
+      <div class="tooltip-header">
+        <div class="tooltip-icon" id="tooltip-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+        </div>
+        <div class="tooltip-header-info">
+          <div class="tooltip-tag" id="tooltip-tag">#AST-001</div>
+          <div class="tooltip-name" id="tooltip-name">Equipment Name</div>
+          <div class="tooltip-brand" id="tooltip-brand">Brand Model</div>
+        </div>
+        <span class="tooltip-status" id="tooltip-status"></span>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="tooltip-stats-row">
+        <div class="tooltip-stat-box">
+          <div class="tooltip-stat-icon">⚡</div>
+          <div class="tooltip-stat-value good" id="tooltip-battery-stat">87%</div>
+          <div class="tooltip-stat-label">Battery</div>
+        </div>
+        <div class="tooltip-stat-box">
+          <div class="tooltip-stat-icon">🔧</div>
+          <div class="tooltip-stat-value good" id="tooltip-service-stat">142d</div>
+          <div class="tooltip-stat-label">Service</div>
+        </div>
+        <div class="tooltip-stat-box">
+          <div class="tooltip-stat-icon">📋</div>
+          <div class="tooltip-stat-value good" id="tooltip-warranty-stat">2.4y</div>
+          <div class="tooltip-stat-label">Warranty</div>
+        </div>
+      </div>
+
+      <div class="tooltip-row">
+        <span class="tooltip-label">📍 Location</span>
+        <span class="tooltip-value" id="tooltip-location">--</span>
+      </div>
+      <div class="tooltip-row">
+        <span class="tooltip-label">🔋 Battery</span>
+        <span style="display: flex; align-items: center;">
+          <div class="tooltip-battery-bar">
+            <div class="tooltip-battery-fill good" id="tooltip-battery-bar" style="width: 85%;"></div>
+          </div>
+          <span class="tooltip-value" id="tooltip-battery">--</span>
+        </span>
+      </div>
+      <div class="tooltip-row">
+        <span class="tooltip-label">🔧 Next Service</span>
+        <span class="tooltip-value good" id="tooltip-service">--</span>
+      </div>
+      <div class="tooltip-row">
+        <span class="tooltip-label">🛡️ Warranty</span>
+        <span class="tooltip-value good" id="tooltip-warranty">--</span>
+      </div>
+      <div class="tooltip-row">
+        <span class="tooltip-label">⏱️ Last Seen</span>
+        <span class="tooltip-value" id="tooltip-lastseen">--</span>
+      </div>
     </div>
-    <div class="tooltip-row">
-      <span class="tooltip-label">Type</span>
-      <span class="tooltip-value" id="tooltip-type">--</span>
-    </div>
-    <div class="tooltip-row">
-      <span class="tooltip-label">Status</span>
-      <span class="tooltip-value" id="tooltip-status-text">--</span>
-    </div>
-    <div class="tooltip-row">
-      <span class="tooltip-label">Location</span>
-      <span class="tooltip-value" id="tooltip-location">--</span>
-    </div>
-    <div class="tooltip-row">
-      <span class="tooltip-label">Battery</span>
-      <span class="tooltip-value" id="tooltip-battery">--</span>
-    </div>
-    <div class="tooltip-row">
-      <span class="tooltip-label">Last Seen</span>
-      <span class="tooltip-value" id="tooltip-lastseen">--</span>
+  </div>
+
+  <!-- BLOCK DETAILS MODAL -->
+  <div class="block-modal-overlay" id="block-modal-overlay">
+    <div class="block-modal">
+      <div class="block-modal-header">
+        <div class="block-modal-title">
+          <div class="block-modal-icon">⛓️</div>
+          <div>
+            <div class="block-modal-number" id="block-modal-number">Block #0</div>
+            <div class="block-modal-subtitle">Audit Chain Block Details</div>
+          </div>
+        </div>
+        <button class="block-modal-close" onclick="closeBlockModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="block-modal-body">
+        <div class="block-detail-section">
+          <div class="block-verified-badge" id="block-verified-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <span>Chain Verified</span>
+          </div>
+        </div>
+
+        <div class="block-detail-row">
+          <div class="block-detail-section">
+            <div class="block-detail-label">Timestamp</div>
+            <div class="block-detail-value" id="block-timestamp">--</div>
+          </div>
+          <div class="block-detail-section">
+            <div class="block-detail-label">Transactions</div>
+            <div class="block-detail-value" id="block-tx-count">0</div>
+          </div>
+        </div>
+
+        <div class="block-detail-section">
+          <div class="block-detail-label">Block Hash</div>
+          <div class="block-detail-value hash" id="block-hash">--</div>
+        </div>
+
+        <div class="block-detail-section">
+          <div class="block-detail-label">Previous Hash</div>
+          <div class="block-detail-value hash" id="block-prev-hash">--</div>
+        </div>
+
+        <div class="block-detail-section">
+          <div class="block-detail-label">Merkle Root</div>
+          <div class="block-detail-value hash" id="block-merkle">--</div>
+        </div>
+
+        <div class="block-detail-section">
+          <div class="block-detail-label">Transactions in Block</div>
+          <div class="block-tx-list" id="block-tx-list">
+            <div class="block-tx-empty">Loading transactions...</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
+    // ==================== AUTH CONFIGURATION ====================
+    const PARTNER_NAMES = {
+      'ENSEMBLE2026': null,           // Internal - no welcome banner
+      'CHBAH-PILOT': 'Chris Hani Baragwanath Team',
+      'KYLSOLUTIONS': null,           // Internal - no welcome banner
+      'MEDTECH-SA': 'MedTech SA Partnership',
+      'PHILIPS-RSA': 'Philips Healthcare SA',
+      'GAUTENG-DOH': 'Gauteng Department of Health',
+      'PARTNER-DEMO': 'Demo Partner'
+    };
+
+    // Auth notification endpoint (Cloudflare Worker)
+    const AUTH_NOTIFY_ENDPOINT = 'https://ensemble-auth-notify.kabelo.workers.dev';
+
+    // ==================== AUTH FUNCTIONS ====================
+    // Auth is ALWAYS required on page load - no session persistence
+    // Every navigation to dashboard requires fresh authentication
+
+    function checkAuth() {
+      const authGate = document.getElementById('authGate');
+
+      if (!authGate) {
+        console.error('[ENSEMBLE] checkAuth: Auth gate element not found!');
+        return false;
+      }
+
+      // Always require fresh authentication on page load
+      // Clear any stale session data
+      sessionStorage.removeItem('ensemble_auth');
+      sessionStorage.removeItem('ensemble_partner');
+
+      // Ensure auth gate is visible
+      authGate.classList.remove('hidden');
+      console.log('[ENSEMBLE] Auth required - showing auth gate');
+      return false;
+    }
+
+    function authenticate() {
+      const passwordInput = document.getElementById('authPassword');
+      const password = passwordInput.value.trim();
+      const validPasswords = Object.keys(PARTNER_NAMES);
+
+      if (validPasswords.includes(password)) {
+        // Set session for current page session only (cleared on navigation)
+        sessionStorage.setItem('ensemble_auth', 'true');
+        sessionStorage.setItem('ensemble_partner', password);
+        document.getElementById('authGate').classList.add('hidden');
+        showWelcome(password);
+        notifyAuth(password);
+        initDashboard();
+      } else {
+        passwordInput.classList.add('error');
+        setTimeout(() => passwordInput.classList.remove('error'), 400);
+        passwordInput.value = '';
+        passwordInput.focus();
+      }
+    }
+
+    function showWelcome(partnerCode) {
+      const partnerName = PARTNER_NAMES[partnerCode];
+      if (partnerName) {
+        const welcomeBanner = document.getElementById('welcomeBanner');
+        const welcomeName = document.getElementById('welcomeName');
+        const mainContainer = document.querySelector('.main-container');
+
+        welcomeName.textContent = partnerName;
+        welcomeBanner.classList.remove('hidden');
+        if (mainContainer) {
+          mainContainer.classList.add('with-banner');
+        }
+
+        // Auto-dismiss after 10 seconds
+        setTimeout(() => dismissWelcome(), 10000);
+      }
+    }
+
+    function dismissWelcome() {
+      const welcomeBanner = document.getElementById('welcomeBanner');
+      const mainContainer = document.querySelector('.main-container');
+
+      welcomeBanner.classList.add('hidden');
+      if (mainContainer) {
+        mainContainer.classList.remove('with-banner');
+      }
+    }
+
+    async function notifyAuth(partnerCode) {
+      try {
+        await fetch(AUTH_NOTIFY_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            partner: partnerCode,
+            timestamp: new Date().toISOString(),
+            platform: 'or-care-stra-ensemble'
+          })
+        });
+      } catch (e) {
+        // Silent fail - notification is non-critical
+        console.log('Auth notification skipped');
+      }
+    }
+
+    // Setup auth event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      const authBtn = document.getElementById('authBtn');
+      const authInput = document.getElementById('authPassword');
+      const closeWelcomeBtn = document.getElementById('closeWelcome');
+
+      if (authBtn) {
+        authBtn.addEventListener('click', authenticate);
+      }
+
+      if (authInput) {
+        authInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') authenticate();
+        });
+        // Auto-focus the input field
+        authInput.focus();
+      }
+
+      if (closeWelcomeBtn) {
+        closeWelcomeBtn.addEventListener('click', dismissWelcome);
+      }
+
+      // Always require fresh auth on page load - checkAuth() clears session and shows gate
+      checkAuth();
+    });
+
+    function initDashboard() {
+      init();
+    }
+
     // ==================== STATE ====================
     let assets = [];
     let alerts = [];
@@ -2307,9 +3177,10 @@
     // ==================== DATA LOADING ====================
     async function loadAssets() {
       try {
-        const res = await fetch('/api/assets');
+        // Use /api/assets/positions to get full data including manufacturer, model, warranty, etc.
+        const res = await fetch('/api/assets/positions');
         const data = await res.json();
-        assets = data.assets || [];
+        assets = data.positions || [];
         assignAssetsToBeds();
         renderAssetsList();
         renderFloorEquipment();
@@ -2374,6 +3245,35 @@
       });
     }
 
+    // ==================== HELPER FUNCTIONS ====================
+    function getAssetCategory(assetType) {
+      if (!assetType) return { name: 'Equipment', icon: '📦', class: 'other' };
+      const type = assetType.toLowerCase();
+      if (type.includes('monitor') || type.includes('ecg')) return { name: 'Patient Monitor', icon: '💓', class: 'monitor' };
+      if (type.includes('ventilator')) return { name: 'Ventilator', icon: '🌬️', class: 'ventilator' };
+      if (type.includes('pump') || type.includes('infusion')) return { name: 'Infusion Pump', icon: '💉', class: 'pump' };
+      if (type.includes('defibrillator') || type.includes('aed')) return { name: 'Defibrillator', icon: '⚡', class: 'defibrillator' };
+      if (type.includes('ultrasound')) return { name: 'Ultrasound', icon: '📡', class: 'other' };
+      if (type.includes('wheelchair')) return { name: 'Wheelchair', icon: '♿', class: 'other' };
+      return { name: 'Equipment', icon: '📦', class: 'other' };
+    }
+
+    function getDaysUntil(dateStr) {
+      if (!dateStr) return null;
+      const target = new Date(dateStr);
+      const now = new Date();
+      return Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+    }
+
+    function formatCountdown(days) {
+      if (days === null) return { text: '--', class: '' };
+      if (days < 0) return { text: 'Overdue', class: 'critical' };
+      if (days <= 30) return { text: `${days}d`, class: 'critical' };
+      if (days <= 90) return { text: `${days}d`, class: 'warning' };
+      if (days < 365) return { text: `${days}d`, class: 'good' };
+      return { text: `${(days / 365).toFixed(1)}y`, class: 'good' };
+    }
+
     // ==================== RENDERING ====================
     function renderAssetsList() {
       const filtered = getFilteredAssets();
@@ -2386,18 +3286,26 @@
 
       assetsList.innerHTML = filtered.map(asset => {
         const status = getAssetStatus(asset);
-        const statusIcon = getStatusIcon(status);
+        const category = getAssetCategory(asset.asset_type);
         const bed = bedAssignments[asset.id] || 'UNKNOWN';
         const batteryClass = asset.battery_level < 20 ? 'low' : '';
+        const statusText = status === 'healthy' ? 'Online' : status === 'inuse' ? 'In Use' : status === 'attention' ? 'Maintenance' : 'Offline';
+        const brandModel = asset.manufacturer && asset.model
+          ? `${asset.manufacturer} ${asset.model}`
+          : asset.name;
 
         return `
-          <div class="asset-item" data-id="${asset.id}">
-            <span class="asset-status-icon ${status}">${statusIcon}</span>
+          <div class="asset-item status-${status}" data-id="${asset.id}">
+            <div class="asset-icon-box ${category.class}">
+              <span>${category.icon}</span>
+            </div>
             <div class="asset-info">
-              <div class="asset-name">${asset.name}</div>
-              <div class="asset-meta">
-                <span class="location">${bed}</span>
-                <span class="battery ${batteryClass}">${asset.battery_level}%</span>
+              <div class="asset-category">${category.name}</div>
+              <div class="asset-brand">${brandModel}</div>
+              <div class="asset-model">${bed} • ${asset.battery_level}%</div>
+              <div class="asset-status-badge ${status}">
+                <span class="dot"></span>
+                <span>${statusText}</span>
               </div>
             </div>
           </div>
@@ -2456,15 +3364,15 @@
     function renderBlockChain(height) {
       const container = document.getElementById('block-chain');
       if (height === 0) {
-        container.innerHTML = '<div class="block-node latest">0</div>';
+        container.innerHTML = '<div class="block-node latest" onclick="showBlockDetails(0)" title="Click to view block details">0</div>';
         return;
       }
       const blocks = [];
       const start = Math.max(0, height - 3);
-      blocks.push(`<div class="block-node latest">${height}</div>`);
+      blocks.push(`<div class="block-node latest" onclick="showBlockDetails(${height})" title="Click to view block details">${height}</div>`);
       for (let i = height - 1; i >= start && i >= 0; i--) {
         blocks.push('<div class="block-connector"></div>');
-        blocks.push(`<div class="block-node">${i}</div>`);
+        blocks.push(`<div class="block-node" onclick="showBlockDetails(${i})" title="Click to view block details">${i}</div>`);
       }
       if (start > 0) {
         blocks.push('<div class="block-connector"></div>');
@@ -2489,25 +3397,72 @@
     function showTooltip(event, asset) {
       const status = getAssetStatus(asset);
       const bed = bedAssignments[asset.id] || 'UNKNOWN';
+      const category = getAssetCategory(asset.asset_type);
+
+      // Update icon based on category
+      const iconEl = document.getElementById('tooltip-icon');
+      iconEl.innerHTML = `<span style="font-size: 20px;">${category.icon}</span>`;
+      iconEl.className = `tooltip-icon ${category.class}`;
+
+      // Header info
+      document.getElementById('tooltip-tag').textContent = `#${asset.asset_tag || 'N/A'}`;
+      document.getElementById('tooltip-name').textContent = category.name;
+      document.getElementById('tooltip-brand').textContent = asset.manufacturer && asset.model
+        ? `${asset.manufacturer} ${asset.model}`
+        : asset.name;
 
       document.getElementById('tooltip-status').className = `tooltip-status ${status}`;
-      document.getElementById('tooltip-name').textContent = asset.name;
-      document.getElementById('tooltip-type').textContent = formatAssetType(asset.asset_type);
-      document.getElementById('tooltip-status-text').textContent = asset.status;
-      document.getElementById('tooltip-status-text').className = `tooltip-value ${status}`;
+
+      // Stats row - Battery
+      const batteryLevel = asset.battery_level || 0;
+      const batteryClass = batteryLevel < 20 ? 'critical' : batteryLevel < 50 ? 'warning' : 'good';
+      document.getElementById('tooltip-battery-stat').textContent = `${batteryLevel}%`;
+      document.getElementById('tooltip-battery-stat').className = `tooltip-stat-value ${batteryClass}`;
+
+      // Stats row - Service countdown
+      const serviceDays = getDaysUntil(asset.next_maintenance);
+      const serviceCountdown = formatCountdown(serviceDays);
+      document.getElementById('tooltip-service-stat').textContent = serviceCountdown.text;
+      document.getElementById('tooltip-service-stat').className = `tooltip-stat-value ${serviceCountdown.class}`;
+
+      // Stats row - Warranty countdown
+      const warrantyDays = getDaysUntil(asset.warranty_expiry);
+      const warrantyCountdown = formatCountdown(warrantyDays);
+      document.getElementById('tooltip-warranty-stat').textContent = warrantyCountdown.text;
+      document.getElementById('tooltip-warranty-stat').className = `tooltip-stat-value ${warrantyCountdown.class}`;
+
+      // Detail rows
       document.getElementById('tooltip-location').textContent = bed;
 
-      const batteryClass = asset.battery_level < 20 ? 'warning' : asset.battery_level < 10 ? 'critical' : '';
-      document.getElementById('tooltip-battery').textContent = `${asset.battery_level}%`;
+      // Battery bar
+      document.getElementById('tooltip-battery').textContent = `${batteryLevel}%`;
       document.getElementById('tooltip-battery').className = `tooltip-value ${batteryClass}`;
+      const batteryBar = document.getElementById('tooltip-battery-bar');
+      batteryBar.style.width = `${batteryLevel}%`;
+      batteryBar.className = `tooltip-battery-fill ${batteryClass}`;
+
+      // Service countdown
+      document.getElementById('tooltip-service').textContent = serviceDays !== null
+        ? (serviceDays < 0 ? 'Overdue!' : `${serviceDays} days`)
+        : '--';
+      document.getElementById('tooltip-service').className = `tooltip-value ${serviceCountdown.class}`;
+
+      // Warranty countdown
+      document.getElementById('tooltip-warranty').textContent = warrantyDays !== null
+        ? (warrantyDays < 365 ? `${warrantyDays} days` : `${(warrantyDays / 365).toFixed(1)} years`)
+        : '--';
+      document.getElementById('tooltip-warranty').className = `tooltip-value ${warrantyCountdown.class}`;
+
+      // Last seen
       document.getElementById('tooltip-lastseen').textContent = formatTime(asset.last_seen);
 
+      // Position tooltip
       const rect = event.target.getBoundingClientRect();
-      let x = rect.right + 10;
+      let x = rect.right + 15;
       let y = rect.top;
 
-      if (x + 220 > window.innerWidth) x = rect.left - 230;
-      if (y + 200 > window.innerHeight) y = window.innerHeight - 210;
+      if (x + 300 > window.innerWidth) x = rect.left - 310;
+      if (y + 340 > window.innerHeight) y = window.innerHeight - 350;
 
       tooltip.style.left = `${x}px`;
       tooltip.style.top = `${y}px`;
@@ -3107,6 +4062,131 @@
       }
     }
 
+    // ==================== BLOCK DETAILS MODAL ====================
+    async function showBlockDetails(blockNumber) {
+      const overlay = document.getElementById('block-modal-overlay');
+
+      // Show modal with loading state
+      overlay.classList.add('active');
+      document.getElementById('block-modal-number').textContent = `Block #${blockNumber}`;
+      document.getElementById('block-tx-list').innerHTML = '<div class="block-tx-empty">Loading transactions...</div>';
+      document.getElementById('block-hash').textContent = 'Loading...';
+      document.getElementById('block-prev-hash').textContent = 'Loading...';
+      document.getElementById('block-merkle').textContent = 'Loading...';
+      document.getElementById('block-timestamp').textContent = 'Loading...';
+      document.getElementById('block-tx-count').textContent = '...';
+
+      try {
+        const response = await fetch(`/api/blockchain/blocks/${blockNumber}`);
+        const data = await response.json();
+
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        const block = data.block || data;
+        const transactions = block.transactions || data.transactions || [];
+
+        // Format timestamp (field is 'timestamp' not 'created_at')
+        const blockTime = block.timestamp || block.created_at;
+        const timestamp = blockTime ? new Date(blockTime).toLocaleString('en-ZA', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        }) : '--';
+
+        // Update modal content
+        document.getElementById('block-timestamp').textContent = timestamp;
+        document.getElementById('block-tx-count').textContent = block.event_count || block.transaction_count || transactions.length || 0;
+        document.getElementById('block-hash').textContent = block.block_hash || block.hash || 'N/A';
+        document.getElementById('block-prev-hash').textContent = block.previous_hash || (blockNumber === 0 ? 'GENESIS' : 'N/A');
+        document.getElementById('block-merkle').textContent = block.merkle_root || 'N/A';
+
+        // Update verified badge
+        const verifiedBadge = document.getElementById('block-verified-badge');
+        if (block.is_valid !== false) {
+          verifiedBadge.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <span>Chain Verified</span>
+          `;
+          verifiedBadge.style.background = 'rgba(16, 185, 129, 0.15)';
+          verifiedBadge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+          verifiedBadge.style.color = 'var(--accent-emerald)';
+        } else {
+          verifiedBadge.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="15" y1="9" x2="9" y2="15"/>
+              <line x1="9" y1="9" x2="15" y2="15"/>
+            </svg>
+            <span>Verification Failed</span>
+          `;
+          verifiedBadge.style.background = 'rgba(239, 68, 68, 0.15)';
+          verifiedBadge.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+          verifiedBadge.style.color = '#ef4444';
+        }
+
+        // Render transactions
+        const txList = document.getElementById('block-tx-list');
+        if (transactions.length === 0) {
+          txList.innerHTML = '<div class="block-tx-empty">No transactions in this block</div>';
+        } else {
+          txList.innerHTML = transactions.map(tx => {
+            const txTime = tx.timestamp ? new Date(tx.timestamp).toLocaleTimeString('en-ZA', {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit'
+            }) : '--';
+
+            const txType = tx.event_type || tx.type || 'UNKNOWN';
+            const txHash = tx.transaction_hash || tx.event_hash || tx.hash || 'N/A';
+
+            return `
+              <div class="block-tx-item">
+                <div class="block-tx-header">
+                  <span class="block-tx-type">${txType.replace(/_/g, ' ')}</span>
+                  <span class="block-tx-time">${txTime}</span>
+                </div>
+                <div class="block-tx-hash">${txHash.substring(0, 32)}...</div>
+              </div>
+            `;
+          }).join('');
+        }
+
+      } catch (err) {
+        console.error('Failed to fetch block details:', err);
+        document.getElementById('block-hash').textContent = 'Error loading block';
+        document.getElementById('block-prev-hash').textContent = '--';
+        document.getElementById('block-merkle').textContent = '--';
+        document.getElementById('block-tx-list').innerHTML = `<div class="block-tx-empty">Failed to load: ${err.message}</div>`;
+      }
+    }
+
+    function closeBlockModal() {
+      const overlay = document.getElementById('block-modal-overlay');
+      overlay.classList.remove('active');
+    }
+
+    // Close modal on overlay click
+    document.getElementById('block-modal-overlay').addEventListener('click', (e) => {
+      if (e.target.id === 'block-modal-overlay') {
+        closeBlockModal();
+      }
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeBlockModal();
+      }
+    });
+
     // ==================== UTILITIES ====================
     function getFilteredAssets() {
       return assets.filter(asset => {
@@ -3164,7 +4244,7 @@
       });
     }
 
-    init();
+    // Note: init() is now called via initDashboard() after successful authentication
   </script>
 </body>
 </html>

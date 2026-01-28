@@ -1,0 +1,8 @@
+name = "ensemble-auth-notify"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# Custom domain (optional)
+# routes = [
+#   { pattern = "ensemble-auth-notify.kyl.solutions", custom_domain = true }
+# ]
