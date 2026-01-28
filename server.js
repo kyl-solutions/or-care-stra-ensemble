@@ -405,6 +405,16 @@ app.get('/api/assets/positions', (c) => {
         a.name,
         a.asset_type,
         a.status,
+        a.manufacturer,
+        a.model,
+        a.serial_number,
+        a.purchase_date,
+        a.purchase_value,
+        a.current_value,
+        a.warranty_expiry,
+        a.last_maintenance,
+        a.next_maintenance,
+        a.maintenance_interval_days,
         a.current_zone_id,
         a.current_x,
         a.current_y,
@@ -824,6 +834,29 @@ app.get('/api/gateways', (c) => {
 app.use('/assets/*', serveStatic({ root: './public' }));
 app.use('/static/*', serveStatic({ root: './public' }));
 
+// Serve desktop app downloads
+app.get('/downloads/:filename', (c) => {
+  const { filename } = c.req.param();
+  const filePath = join(__dirname, 'public', 'downloads', filename);
+
+  if (!existsSync(filePath)) {
+    return c.json({ error: 'File not found' }, 404);
+  }
+
+  const fileBuffer = readFileSync(filePath);
+  const contentType = filename.endsWith('.dmg') ? 'application/x-apple-diskimage'
+    : filename.endsWith('.exe') ? 'application/x-msdownload'
+    : 'application/octet-stream';
+
+  return new Response(fileBuffer, {
+    headers: {
+      'Content-Type': contentType,
+      'Content-Disposition': `attachment; filename="${filename}"`,
+      'Content-Length': fileBuffer.length.toString()
+    }
+  });
+});
+
 // Serve main pages
 app.get('/', (c) => {
   const html = readFileSync(join(__dirname, 'public', 'landing.html'), 'utf-8');
@@ -876,6 +909,17 @@ app.get('/landing', (c) => {
 
 app.get('/landing.html', (c) => {
   const html = readFileSync(join(__dirname, 'public', 'landing.html'), 'utf-8');
+  return c.html(html);
+});
+
+// Schematics - Presentation-ready visual diagrams
+app.get('/schematics/architecture', (c) => {
+  const html = readFileSync(join(__dirname, 'public', 'schematics', 'system-architecture.html'), 'utf-8');
+  return c.html(html);
+});
+
+app.get('/schematics/certificate', (c) => {
+  const html = readFileSync(join(__dirname, 'public', 'schematics', 'asset-identity-certificate.html'), 'utf-8');
   return c.html(html);
 });
 

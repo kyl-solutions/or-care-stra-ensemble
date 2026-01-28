@@ -2,6 +2,16 @@
   "name": "or-care-stra-ensemble",
   "version": "1.0.0",
   "description": "Digital Twin Hospital Equipment Tracking System - Saving Lives Through Asset Visibility",
+  "author": {
+    "name": "KYL Solutions",
+    "email": "projects@kylsolutions.co.za",
+    "url": "https://kylsolutions.co.za"
+  },
+  "homepage": "https://github.com/kyl-solutions/or-care-stra-ensemble",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kyl-solutions/or-care-stra-ensemble.git"
+  },
   "type": "module",
   "main": "electron/main.js",
   "scripts": {
@@ -48,6 +58,8 @@
       "public/**/*",
       "database/**/*",
       "!database/*.db",
+      "blockchain/**/*",
+      "simulator/**/*",
       "node_modules/**/*",
       "!node_modules/.cache/**/*"
     ],
@@ -64,22 +76,18 @@
         {
           "target": "dmg",
           "arch": [
-            "x64",
-            "arm64"
+            "x64"
           ]
         },
         {
           "target": "zip",
           "arch": [
-            "x64",
-            "arm64"
+            "x64"
           ]
         }
       ],
-      "hardenedRuntime": true,
-      "gatekeeperAssess": false,
-      "entitlements": "electron/entitlements.mac.plist",
-      "entitlementsInherit": "electron/entitlements.mac.plist"
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false
     },
     "win": {
       "icon": "electron/icons/icon.ico",
